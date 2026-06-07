@@ -403,6 +403,23 @@ const VERBS={
 
 const shortlist=new Set();
 
+const STORE_KEY="verbgrid_added_v1";
+function saveAdded(){
+  try{
+    const out={};
+    Object.keys(VERBS).forEach(k=>{if(VERBS[k].userAdded)out[k]=VERBS[k];});
+    localStorage.setItem(STORE_KEY,JSON.stringify(out));
+  }catch(e){}
+}
+function loadAdded(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY);
+    if(!raw)return;
+    const obj=JSON.parse(raw);
+    Object.keys(obj).forEach(k=>{if(!VERBS[k])VERBS[k]=obj[k];});
+  }catch(e){}
+}
+
 function populateSurfaceSelect(){
   const sel=document.getElementById("vsurface");
   sel.innerHTML=SURFACES.map((s,i)=>`<option value="${s[0]}"${i===0?" selected":""}>${s[1]}</option>`).join("");
@@ -441,7 +458,7 @@ function buildGrid(){
       cell.addEventListener("drop",e=>{
         e.preventDefault();cell.classList.remove("dragover");
         const v=e.dataTransfer.getData("text/plain");
-        if(VERBS[v]){VERBS[v].surface=cell.dataset.place;VERBS[v].force=parseInt(cell.dataset.force,10);buildGrid();if(selected===v)select(v);}
+        if(VERBS[v]){VERBS[v].surface=cell.dataset.place;VERBS[v].force=parseInt(cell.dataset.force,10);saveAdded();buildGrid();if(selected===v)select(v);}
       });
       verbs.filter(v=>VERBS[v].force===s).forEach(v=>{
         const b=document.createElement("button");
@@ -508,6 +525,7 @@ function removeVerb(v){
   if(!VERBS[v])return;
   delete VERBS[v];
   shortlist.delete(v);
+  saveAdded();
   if(selected===v){
     selected=null;
     document.getElementById("detail").innerHTML='<div class="placeholder">Select a verb from the grid to map its user journey.</div>';
@@ -575,6 +593,7 @@ async function handleAdd(){
   try{result=await predictAI(name,force,surface,desc);}
   catch(e){result=predictHeuristic(name,force,surface,desc);}
   VERBS[name]=result;
+  saveAdded();
   buildGrid();select(name);
   document.getElementById("vname").value="";document.getElementById("vdesc").value="";
   btn.disabled=false;
@@ -582,6 +601,7 @@ async function handleAdd(){
 
 document.getElementById("addbtn").onclick=handleAdd;
 populateSurfaceSelect();
+loadAdded();
 buildGrid();
 renderShortlist();
 </script>
