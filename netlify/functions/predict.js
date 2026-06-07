@@ -1,50 +1,63 @@
-// Netlify serverless function. It holds your API key as an environment
-// variable (ANTHROPIC_API_KEY) and makes the model call on the server, so the
-// key is never sent to the browser. The page calls this at /.netlify/functions/predict
-
-const FORCE = { sub: "Subtract", res: "Reshape", add: "Add" };
-const SURF = { flow: "Flow", boundary: "Boundary", endpoint: "Endpoint", architecture: "Architecture" };
-
-const SYSTEM = `You predict user journeys for interface interventions in a design thesis on non-sticky social media.
-Framework: every intervention has a FORCE (subtract, reshape, add) and a SURFACE (flow, boundary, endpoint, architecture). Three layers exist: casino (variable-reward compulsion mechanics), congregation (parasocial bonds and devotional return), commons (genuine peer-to-peer connection). Cardinal rule, the puritan trap: target the casino without damaging the commons.
-Reason from these documented patterns: notification batching three times a day improves wellbeing while turning alerts fully off raises anxiety and FoMO (Fitz 2019); intent-pause friction gets about a third of openings abandoned but the effect decays over weeks and a bare deliberation message does nothing (Gruning 2023); chronological feeds reduce time but raise untrustworthy content, so less sticky is not healthier (Guess 2023); app blocking is heavily circumvented and risks cutting the commons (Lyngs 2019); greyscale cuts time modestly and raises perceived control but leaves checking frequency and mood unchanged (Holte 2020); awareness and reflection rarely convert to behaviour; gamified abstinence can become its own compulsion.
-Predict a realistic journey with an honest failure mode. Output ONLY valid JSON, no markdown fences, no preamble, exactly this shape: {"def":"one line","layer":"which of casino, congregation or commons it touches","principle":"Reverse Reward Loop or Modularity or Ethical Gamification","journey":[["First encounter","..."],["Adaptation","..."],["Steady state","..."],["Failure mode","..."]],"up":["..",".."],"dn":["..",".."],"guard":"one sentence commons check","basis":"one sentence naming the closest analogous evidence"}. Keep every field concise. Do not use em dashes.`;
-
+// Netlify serverless function. Holds the API key server-side and returns a predicted journey.
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method not allowed" };
   }
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: "Missing ANTHROPIC_API_KEY environment variable" }) };
-  }
-  try {
-    const { name, force, surface, desc } = JSON.parse(event.body || "{}");
-    const user = `Verb: ${name}. Force: ${FORCE[force] || force}. Surface: ${SURF[surface] || surface}.` + (desc ? ` What it does: ${desc}` : "");
+  let payload;
+  try { payload = JSON.parse(event.body || "{}"); }
+  catch (e) { return { statusCode: 400, body: "Bad JSON" }; }
 
+  const name = (payload.name || "").toString().slice(0, 40);
+  const force = (payload.force || "3").toString().slice(0, 2);
+  const surface = (payload.surface || "the interface").toString().slice(0, 60);
+  const desc = (payload.desc || "").toString().slice(0, 300);
+
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { statusCode: 500, body: JSON.stringify({ error: "no key configured" }) };
+
+  const system = [
+    "You are a design researcher for a thesis on non-sticky social media.",
+    "The framework has three layers: casino (variable-reward compulsion), congregation (parasocial bonds), commons (genuine peer connection).",
+    "Three principles: Reverse Reward Loop (value accrues to the user offline), Modularity (temporal and feature-level), Ethical Gamification.",
+    "Guardrail, the puritan trap: never destroy the commons while targeting the casino.",
+    "A verb is an interface intervention. It has a STRENGTH from 1 (gentle) to 5 (heavy), and acts on a concrete UI SURFACE (for example notification pings, the feed, infinite scroll, recommendations, like and comment counts, app open, pull to refresh, direct messages, your time).",
+    "Predict the realistic user journey grounded in HCI evidence (notification batching, one-second friction, chronological feeds, greyscale, hidden likes, app-open prompts).",
+    "Return ONLY valid JSON, no markdown, no preamble, with exactly these keys:",
+    '{"def": string (one sentence), "layer": string, "principle": string, "journey": [[stageTitle, text], [stageTitle, text], [stageTitle, text]] (exactly 3 common-path stages), "holds": {"when": string, "then": string}, "fails": {"when": string, "then": string}, "guard": string (the commons check), "basis": string (closest real study or pattern)}',
+    "holds is the condition under which the verb works and the good outcome. fails is the condition under which it breaks and the bad outcome. Keep each field short. Do not wrap strings in extra quotes."
+  ].join(" ");
+
+  const user = `Verb: ${name}. Strength: ${force} of 5. UI surface: ${surface}.${desc ? " Intent: " + desc : ""} Predict its journey as specified.`;
+
+  try {
     const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "x-api-key": key,
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
-        // To cut cost about 3x, change this to "claude-haiku-4-5"
         model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        system: SYSTEM,
+        max_tokens: 900,
+        system: system,
         messages: [{ role: "user", content: user }]
       })
     });
-
-    const data = await r.json();
-    if (!data.content) {
-      return { statusCode: 502, body: JSON.stringify({ error: "Unexpected response from model API", detail: data }) };
+    if (!r.ok) {
+      const t = await r.text();
+      return { statusCode: 502, body: JSON.stringify({ error: "model error", detail: t.slice(0, 300) }) };
     }
-    let txt = data.content.filter(b => b.type === "text").map(b => b.text).join("").trim();
-    txt = txt.replace(/^```json/i, "").replace(/^```/, "").replace(/```$/, "").trim();
-    return { statusCode: 200, headers: { "content-type": "application/json" }, body: txt };
+    const data = await r.json();
+    let text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("\n").trim();
+    text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+    const parsed = JSON.parse(text);
+    return {
+      statusCode: 200,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(parsed)
+    };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: String(e) }) };
+    return { statusCode: 502, body: JSON.stringify({ error: "prediction failed", detail: (e.message || "").slice(0, 200) }) };
   }
 };
