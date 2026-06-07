@@ -59,12 +59,6 @@
   .chip:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(40,38,60,.14)}
   .chip.active{box-shadow:0 0 0 2px var(--ink)}
   .chip.dragging{opacity:.4}
-  .chip .fnum{font-size:10.5px;font-weight:600;color:#fff;background:var(--blue-deep);border-radius:4px;padding:1px 5px}
-  .fnum.f1{background:#4E9E3A}
-  .fnum.f2{background:#84A52C}
-  .fnum.f3{background:#C9971C}
-  .fnum.f4{background:#D9712A}
-  .fnum.f5{background:#C23B2E}
   .chip .st{color:#E6A700;font-size:12px}
 
   /* DETAIL */
@@ -87,12 +81,12 @@
   .pip.on.p4{background:#D9712A}
   .pip.on.p5{background:#C23B2E}
   .fmeter .flabel{font-size:11.5px;font-weight:600;color:#41405a}
-  .def{font-size:16px;margin-bottom:18px;max-width:64ch}
+  .def{font-size:16px;margin-bottom:6px;max-width:64ch}
+  .doesline{font-size:14px;color:var(--muted);margin-bottom:18px;max-width:64ch}
   .sech{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
   .journey{display:flex;gap:0;overflow-x:auto;padding-bottom:6px;margin-bottom:22px}
-  .stage{flex:1 1 0;min-width:150px;background:var(--soft);border-radius:12px;padding:13px}
+  .stage{flex:1 1 0;min-width:150px;background:var(--soft);border-radius:12px;padding:13px;position:relative}
   .stage + .stage{margin-left:18px}
-  .stage{position:relative}
   .stage::before{content:"›";position:absolute;left:-15px;top:50%;transform:translateY(-50%);color:var(--blue-deep);font-size:22px;font-weight:600}
   .stage:first-child::before{display:none}
   .stage .n{font-size:11px;font-weight:600;color:var(--blue-deep);margin-bottom:5px}
@@ -102,7 +96,7 @@
   .branch{border-radius:14px;padding:15px}
   .branch.hold{background:var(--hold-bg);border:1px solid var(--hold-line)}
   .branch.fail{background:var(--fail-bg);border:1px solid var(--fail-line)}
-  .branch h4{font-size:13px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .branch h4{font-size:13px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
   .branch.hold h4{color:var(--hold-ink)}
   .branch.fail h4{color:var(--fail-ink)}
   .branch .when{font-size:14px;color:#2c2a3a;margin-bottom:8px}
@@ -110,6 +104,10 @@
   .branch .then .arr{font-weight:700}
   .branch.hold .then .arr{color:var(--hold-ink)}
   .branch.fail .then .arr{color:var(--fail-ink)}
+  .risk{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.03em}
+  .risk.low{background:var(--hold-bg);color:var(--hold-ink)}
+  .risk.moderate{background:#FAEEDA;color:#854F0B}
+  .risk.high{background:#F4D2CC;color:var(--fail-ink)}
   .guard{background:#EDEAFB;border-radius:12px;padding:13px 15px;margin-bottom:18px;font-size:14px}
   .guard .lab{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#5d4ca8;display:block;margin-bottom:4px}
   .cites{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px}
@@ -164,7 +162,7 @@
   <header>
     <div class="eyebrow">The grid and the test</div>
     <h1>What each verb does to a user</h1>
-    <p class="lede">Each row is a place in the app. Each column is how forceful the move is, green and gentle on the left, red and paternalistic on the right. Drag any verb to a new cell to move it. Select one to see its likely journey and, crucially, when it holds up versus when it breaks. Star the ones worth keeping for the shortlist at the bottom.</p>
+    <p class="lede">Each row is a place in the app. Each column is how forceful the move is, green and gentle on the left, red and paternalistic on the right. Drag a verb to a new column and its journey changes, because strength is not neutral: too gentle and it is ignored, the middle is where behaviour shifts, too heavy and it is circumvented or it damages the connection it was never meant to touch. Select a verb to see this, and star the keepers for the shortlist below.</p>
     <div class="legend">
       <span class="ev s">Strong — direct field experiment</span>
       <span class="ev m">Moderate — adjacent or mixed evidence</span>
@@ -175,7 +173,7 @@
   <div class="layout">
     <section class="card">
       <h2>The grid</h2>
-      <div class="sub">Down the side, where in the app it acts. Across the top, how forceful it is: green and gentle at 1, red and paternalistic at 5. Drag a verb to any cell to move it.</div>
+      <div class="sub">Down the side, where in the app it acts. Across the top, how forceful it is: green and gentle at 1, red and paternalistic at 5. Drag a verb to any cell to change where and how hard it acts.</div>
       <div id="grid"></div>
     </section>
 
@@ -190,7 +188,7 @@
             <option value="2">2 light</option>
             <option value="3" selected>3 moderate</option>
             <option value="4">4 strong</option>
-            <option value="5">5 heavy</option>
+            <option value="5">5 paternalistic</option>
           </select>
         </label>
         <label class="field"><span class="flab">where</span>
@@ -199,7 +197,7 @@
         <input id="vdesc" type="text" placeholder="What does it do? (optional)" maxlength="120">
         <button id="addbtn">Add and predict</button>
       </div>
-      <div class="hint"><b>Strength</b> is how forceful the move is, 1 gentle to 5 heavy. <b>Where</b> is the part of the app it touches.</div>
+      <div class="hint"><b>Strength</b> is how forceful the move is, 1 gentle to 5 paternalistic. <b>Where</b> is the part of the app it touches. Drag it across columns afterwards to see the strength change its story.</div>
       <div class="addmsg" id="addmsg"></div>
     </section>
 
@@ -245,179 +243,189 @@ const SURFACES=[
 ];
 const SLABEL={};SURFACES.forEach(s=>SLABEL[s[0]]=s[1]);
 const FORCEWORD={1:"Gentle",2:"Light",3:"Moderate",4:"Strong",5:"Paternalistic"};
+const RISK={1:"high",2:"moderate",3:"low",4:"moderate",5:"high"};
 
+// Each verb carries a clear definition, a mechanism phrase, and the grounded
+// outcome it produces at a moderate strength. The journey, holds, fails and
+// failure risk are computed from the strength column it currently sits in.
 const VERBS={
   Mute:{surface:"pings",force:3,ev:"strong",
-    def:"Silences the interruption while the content stays available on your terms.",
-    journey:[["First encounter","Immediate calm, far fewer interruptions."],["Adaptation","A FoMO twinge, plus worry about being slow to reply."],["Steady state","You end up checking on your own initiative instead."]],
-    holds:{when:"you mute the broadcast pings but keep real people able to reach you",then:"less distraction, and the timing of checking is back in your hands"},
-    fails:{when:"you silence everything, people included",then:"anxiety and FoMO rise and you compensate by checking constantly anyway"},
+    def:"Turns off the noise from a feature while leaving the content reachable when you choose.",
+    mech:"silencing the broadcast alerts",
+    anchor:"you check on your own terms with far fewer interruptions (Fitz et al. 2019)",
     layer:"Casino + Congregation",principle:"Modularity",
     guard:"Silence the casino's pings, not a real person trying to reach you.",
     cites:["Fitz et al. 2019, CHB (the never-notify group felt more anxiety and FoMO and self-initiated more checking).","Pielot & Rello 2017 (a notification-free week left people less distracted but anxious about responsiveness)."]},
   Aggregate:{surface:"pings",force:2,ev:"strong",
-    def:"Collects scattered alerts into predictable batches at times you set.",
-    journey:[["First encounter","A small FoMO twinge, used to instant pings."],["Adaptation","You settle into the rhythm of set delivery times."],["Steady state","Calmer, more attentive, more in control of the phone."]],
-    holds:{when:"batched a few times a day",then:"mood, attention and control improve and stress drops"},
-    fails:{when:"batched hourly, or so rarely you miss time-sensitive messages",then:"the benefit disappears, or important messages lag too long"},
+    def:"Holds scattered alerts and delivers them together at times you set.",
+    mech:"collecting alerts into set batches",
+    anchor:"mood, attention and control improve and stress drops (Fitz et al. 2019)",
     layer:"Congregation",principle:"Modularity",
     guard:"Batch the broadcast pings, let genuine one-to-one messages through.",
     cites:["Fitz et al. 2019, CHB (three daily batches improved well-being; hourly did not; never-notify raised anxiety)."]},
   Reveal:{surface:"pings",force:1,ev:"moderate",
-    def:"Names the mechanism at the moment it fires. Transparency as intervention.",
-    journey:[["First encounter","A moment of awareness, you see the machinery."],["Adaptation","The first few times, it prompts a real choice."],["Steady state","Habituation sets in and it becomes part of the furniture."]],
-    holds:{when:"it is paired with an action you can take right there",then:"it surfaces the manipulation at the decision point"},
-    fails:{when:"it is awareness alone, just a message",then:"it does little; a bare message did not change behaviour in trials"},
+    def:"Shows you the persuasive mechanism in the moment it is working on you.",
+    mech:"naming the mechanism as it fires",
+    anchor:"the manipulation is surfaced at the decision point and prompts a real choice (Grüning et al. 2023)",
     layer:"Casino + Congregation",principle:"Ethical Gamification",
     guard:"Reveal the pull, then pair it with an action or it fades to noise.",
     cites:["Grüning et al. 2023, PNAS (the deliberation message alone was not effective; the dismiss option and delay carried the effect).","Fazio 2020 (pausing to consider has modest effects)."]},
 
   Reorder:{surface:"feed",force:2,ev:"strong",
-    def:"Replaces the engagement ranking with your order, usually chronological.",
-    journey:[["First encounter","The feed feels less compelling almost at once."],["Adaptation","Time on platform and activity drop."],["Steady state","The content mix shifts, fewer engineered hooks."]],
-    holds:{when:"your goal is less time and less engineered pull",then:"time and activity drop substantially, with less uncivil content"},
-    fails:{when:"you assume chronological means healthier content",then:"you actually see more untrustworthy and political content, and attitudes do not change"},
+    def:"Swaps the engagement-ranked feed for a neutral order such as newest-first.",
+    mech:"replacing the ranked feed with your order",
+    anchor:"time on the platform and engineered pull drop substantially (Guess et al. 2023)",
     layer:"Casino",principle:"Modularity",
     guard:"Remember it proves quality is not the axis: less sticky is not automatically better.",
     cites:["Guess et al. 2023, Science (a chronological feed cut time and activity, raised untrustworthy content, left attitudes unchanged)."]},
   Slow:{surface:"feed",force:3,ev:"thin",
-    def:"Controls the rate of consumption, handing the tempo back to you.",
-    journey:[["First encounter","Pace feels off, the cascade stops flowing."],["Adaptation","Binge depth drops as the rhythm breaks."],["Steady state","You settle into the slower pace, or you do not."]],
-    holds:{when:"the slowdown feels like rhythm rather than lag",then:"binge depth likely drops and tempo returns to you"},
-    fails:{when:"it reads as artificial lag",then:"it just annoys and you route around it (evidence here is thin)"},
+    def:"Caps how fast content can be served, so the tempo is yours not the feed's.",
+    mech:"controlling the rate of consumption",
+    anchor:"binge depth drops as the cascade rhythm breaks",
     layer:"Casino",principle:"Modularity",
     guard:"Slow the feed, not a live exchange between people.",
     cites:["Extrapolated from friction findings (Grüning et al. 2023). Direct evidence is thin."]},
   Block:{surface:"feed",force:5,ev:"moderate",
-    def:"Removes a whole feature or app outright.",
-    journey:[["First encounter","Relief and resolve, the temptation is gone."],["Adaptation","Friction builds, it starts to feel like a wall."],["Steady state","You rely on it, or you find ways around it."]],
-    holds:{when:"you chose it yourself and it only removes the casino part",then:"target use drops sharply, at least in the short term"},
-    fails:{when:"it is blunt or imposed and takes real conversations with it",then:"people circumvent it, uninstall, or migrate to another app"},
+    def:"Takes a feature or app away completely.",
+    mech:"removing the feature outright",
+    anchor:"target use drops sharply while it lasts (Lyngs et al. 2019)",
     layer:"Casino (risks Commons)",principle:"Modularity",
     guard:"Never block a whole app if real conversation lives inside it.",
     cites:["Lyngs et al. 2019, CHI (block and removal is the most common and most circumvented strategy).","Haliburton et al. 2024, CHI (users take breaks from restrictions and rebound)."]},
 
   Cap:{surface:"scroll",force:4,ev:"moderate",
-    def:"Sets a finite quantity, manufacturing an ending in an endless system.",
-    journey:[["First encounter","You set the limit in good faith."],["Adaptation","It arrives mid-session at the least convenient moment."],["Steady state","You dismiss it, or you respect it."]],
-    holds:{when:"the cap is hard to dismiss, a real commitment",then:"you finally get a stopping point the platform refuses to give"},
-    fails:{when:"it is a soft limit you can tap past",then:"you hit ignore and it becomes wallpaper"},
+    def:"Puts a ceiling on how much you can consume in a sitting.",
+    mech:"setting a finite amount",
+    anchor:"you finally get a stopping point the platform refuses to give",
     layer:"Casino",principle:"Modularity",
     guard:"Cap the scroll, not the conversation.",
     cites:["Lyngs et al. 2019, CHI.","Screen-time-limit and ambient-timer studies (soft limits are often ignored; an ambient timer cut use about 10.7 percent)."]},
   Summarize:{surface:"scroll",force:2,ev:"thin",
-    def:"Replaces the scroll with a short précis of what you would have seen.",
-    journey:[["First encounter","The keep-up need is met in seconds, no ritual."],["Adaptation","Some feel lighter, the loop is cut."],["Steady state","Others feel out of the loop on nuance."]],
-    holds:{when:"the value you wanted was information, not the ritual",then:"you stay informed without the scroll"},
-    fails:{when:"the value was social texture or nuance",then:"you feel you are missing something (largely untested)"},
+    def:"Gives you a short digest instead of an endless stream to scroll.",
+    mech:"replacing the scroll with a short précis",
+    anchor:"you stay informed without the scroll ritual",
     layer:"Casino + Congregation",principle:"Reverse Reward Loop",
     guard:"Summarise the broadcast, not the message from a friend.",
     cites:["Predicted. No strong direct evidence located; reasoned from the stopping-cue literature."]},
   Decay:{surface:"scroll",force:3,ev:"thin",
-    def:"Content and access expire, so there is no backlog to fall behind on.",
-    journey:[["First encounter","Relief, nothing piles up."],["Adaptation","Backlog anxiety dissolves for some."],["Steady state","For others, expiry creates its own urgency."]],
-    holds:{when:"it clears casino noise that was creating catch-up pressure",then:"there is no backlog to fall behind on"},
-    fails:{when:"the expiry itself becomes a catch-it-before-it-is-gone hook",then:"it manufactures its own FoMO (evidence is thin)"},
+    def:"Makes content and unread counts expire so nothing piles up to chase.",
+    mech:"letting content and access expire",
+    anchor:"there is no backlog to fall behind on",
     layer:"Casino",principle:"Reverse Reward Loop",
     guard:"Let casino noise decay, do not delete a person's words to you.",
     cites:["Predicted. Ephemerality research is mostly engagement-driven; direct well-being evidence is thin."]},
 
   Quarantine:{surface:"recs",force:3,ev:"moderate",
-    def:"Puts the algorithmic feed behind a door, so exposure is opt-in.",
-    journey:[["First encounter","The room still exists, but you choose to enter it."],["Adaptation","Visits become deliberate rather than ambient."],["Steady state","Core functions stay usable without the rabbit hole."]],
-    holds:{when:"the high-risk feed sits behind an intentional door",then:"exposure becomes opt-in and core use is preserved"},
-    fails:{when:"you rely on it to stop a determined pull",then:"you walk in anyway, it is a speed bump not a wall"},
+    def:"Moves the riskiest feed behind a deliberate extra step.",
+    mech:"putting the algorithmic feed behind a door",
+    anchor:"the rabbit hole becomes opt-in while core use stays usable (Lyngs et al. 2020)",
     layer:"Casino",principle:"Modularity",
     guard:"Quarantine the feed, keep the inbox in the open.",
     cites:["Lyngs et al. 2020, CHI (removing the Facebook newsfeed let people use the site socially without the spiral)."]},
   Separate:{surface:"recs",force:2,ev:"moderate",
-    def:"Splits the blended stream into its layers so each can be treated differently.",
-    journey:[["First encounter","The feed becomes legible: algorithm, follows, friends."],["Adaptation","Each layer can be handled on its own terms."],["Steady state","Casino blocked, congregation batched, commons left alone."]],
-    holds:{when:"you can actually pull the layers apart",then:"layer-specific intervention becomes possible at all"},
-    fails:{when:"the platform keeps them fused",then:"separation is hard from outside, and removing reshares can raise uncivil content"},
+    def:"Pulls the blended feed apart into its layers so each can be treated differently.",
+    mech:"splitting the blended stream into layers",
+    anchor:"each layer can be handled on its own terms (Guess et al. 2023)",
     layer:"Structural (all three)",principle:"Modularity",
     guard:"Separation is what lets you protect the commons in the first place.",
     cites:["Guess et al. 2023, Science / Nyhan et al. 2023 (removing reshared content reshaped exposure, with mixed effects)."]},
 
   Strip:{surface:"counts",force:4,ev:"strong",
-    def:"Removes one reward mechanic, like the like-count or colour, while content stays.",
-    journey:[["First encounter","Feels drab and a little awkward for a day or two."],["Adaptation","Reacting gets easier, sessions get shorter."],["Steady state","Perceived control rises over weeks."]],
-    holds:{when:"what you remove is a pure vanity or reward signal",then:"screen time drops 7 to 11 percent and control rises"},
-    fails:{when:"you expect it to lift mood or curb video bingeing",then:"mood is unchanged, heavy use continues, and check frequency stays flat"},
+    def:"Removes one reward signal, like the like-count, while the post itself stays.",
+    mech:"removing a reward mechanic",
+    anchor:"screen time drops 7 to 11 percent and perceived control rises (Holte & Ferraro 2020; Dekker & Baumgartner 2024)",
     layer:"Casino",principle:"Modularity",
     guard:"Stripping a metric is fine, stripping the message thread is not.",
     cites:["Holte & Ferraro 2020; Dekker & Baumgartner 2024 (greyscale reduces screen time and raises perceived control, no reliable mood change).","Instagram hidden-likes trials."]},
 
   Gate:{surface:"open",force:3,ev:"strong",
-    def:"Inserts an intent check or short pause before you enter.",
-    journey:[["First encounter","The pause prompts a beat of thought."],["Adaptation","You open less often over the following weeks."],["Steady state","Opening becomes more intentional than reflexive."]],
-    holds:{when:"the pause keeps a real friction and an easy dismiss option",then:"about a third of opens are abandoned, 37 percent fewer over six weeks"},
-    fails:{when:"it is just a message with no friction, or months have passed",then:"it does little, and the effect decays as you take breaks from it"},
+    def:"Puts a short, deliberate pause between you and opening the app.",
+    mech:"adding an intent check before entry",
+    anchor:"about a third of opens are abandoned and opens fall 37 percent over six weeks (Grüning et al. 2023)",
     layer:"Casino",principle:"Ethical Gamification",
     guard:"Gate the reflexive open, not the deliberate one.",
     cites:["Grüning et al. 2023, PNAS (one sec: 36 percent dismissed after the pause, 37 percent fewer opens; the dismiss option mattered most).","Haliburton et al. 2024, CHI (frictions raise intentional opening; users take breaks and rebound)."]},
   Schedule:{surface:"open",force:3,ev:"moderate",
-    def:"Gives the app opening hours you set, like a shop.",
-    journey:[["First encounter","Structure replaces willpower, decided once in advance."],["Adaptation","Off-hours absence feels structural, not like deprivation."],["Steady state","Predictability lowers stress, the way set batch times do."]],
-    holds:{when:"the windows respect your real social rhythms",then:"bounded availability, lower willpower cost, less stress"},
-    fails:{when:"the windows ignore when people actually reach you",then:"off-hours FoMO and anxiety creep back in"},
+    def:"Limits the app to set hours, like a shop that closes.",
+    mech:"giving the app fixed opening hours",
+    anchor:"availability is bounded and the willpower cost of resisting drops",
     layer:"Casino",principle:"Modularity",
     guard:"Close the casino after hours, keep the door to people open.",
     cites:["Adjacent to Fitz et al. 2019 (predictable delivery helps) and Pielot & Rello 2017 (forced absence raises anxiety)."]},
 
   Cooldown:{surface:"refresh",force:3,ev:"moderate",
-    def:"Locks a short interval after you leave, targeting the instant re-check reflex.",
-    journey:[["First encounter","The instinctive pull-to-refresh hits a wall."],["Adaptation","The urge burns off in the gap rather than being fed."],["Steady state","Re-checking spaces out over time."]],
-    holds:{when:"the interval is short enough not to feel punishing",then:"the compulsive re-check loop is interrupted"},
-    fails:{when:"the lockout is long",then:"it reads as punishment and you work around it"},
+    def:"Blocks an instant re-open or refresh for a short cooling-off window.",
+    mech:"locking a short interval after you leave",
+    anchor:"the instant re-check loop is interrupted",
     layer:"Casino",principle:"Modularity",
     guard:"Cool down the refresh loop, not access to people.",
     cites:["Extrapolated from friction findings (Grüning et al. 2023; Haliburton et al. 2024). Evidence is moderate."]},
 
   Pin:{surface:"dms",force:1,ev:"thin",
-    def:"Elevates what matters above the churn. The active complement to leaving things alone.",
-    journey:[["First encounter","What you care about stops getting buried."],["Adaptation","Friends and chosen sources surface above strangers."],["Steady state","The commons is protected by elevation, not removal."]],
-    holds:{when:"you elevate genuine connection above the churn",then:"real people stay visible without removing anything"},
-    fails:{when:"the platform keeps re-burying what you pin",then:"elevation fights the feed (largely untested)"},
+    def:"Promotes the people and sources you choose above whatever the feed pushes.",
+    mech:"elevating what matters above the churn",
+    anchor:"genuine connection stays visible without removing anything",
     layer:"Commons",principle:"Modularity",
     guard:"Pin the people, let the feed fall where it may.",
     cites:["Predicted from the commons-preservation principle. Direct evidence is thin."]},
 
   Reflect:{surface:"usage",force:1,ev:"moderate",
-    def:"Mirrors your own behaviour or state back to you.",
-    journey:[["First encounter","Seeing the data lands as insight."],["Adaptation","Perceived control and competence rise."],["Steady state","Self-knowledge holds, but does not move on its own."]],
-    holds:{when:"reflection is paired with a lever you can pull",then:"control and competence rise"},
-    fails:{when:"it is insight with no lever to act on",then:"it stalls at the intention-behaviour gap, motivation unchanged"},
+    def:"Shows you your own usage plainly, as information rather than a scoreboard.",
+    mech:"mirroring your own use back to you",
+    anchor:"perceived control and competence rise",
     layer:"Self",principle:"Reverse Reward Loop",
     guard:"Reflection should inform you, not shame you.",
     cites:["Ambient session-timer studies (improved competence and awareness, not motivation).","Lyngs et al. 2019, CHI (self-tracking cluster)."]},
   Reward:{surface:"usage",force:2,ev:"moderate",
-    def:"Assigns value to disengagement, so progress accrues offline.",
-    journey:[["First encounter","Gamified motivation pushes you to stay out."],["Adaptation","You build a streak of time reclaimed."],["Steady state","The reward can start to take over."]],
-    holds:{when:"the reward stays light and points at your offline life",then:"disengagement gets a tangible payoff and early momentum"},
-    fails:{when:"it hardens into a streak to optimise",then:"the casino reappears flipped over and extrinsic reward crowds out intrinsic"},
+    def:"Gives staying off the app a visible payoff, so progress accrues to you.",
+    mech:"assigning value to staying away",
+    anchor:"disengagement gets a tangible payoff and early momentum (Lyngs et al. 2019)",
     layer:"Reverse reward / Self",principle:"Ethical Gamification",
     guard:"Reward staying out without rebuilding the slot machine in reverse.",
     cites:["Lyngs et al. 2019, CHI (reward and punishment is about 22 percent of self-control tools).","Gamified-focus app literature, for example Forest."]}
 };
 
 const shortlist=new Set();
+const STORE_KEY="verbgrid_added_v2";
+function saveAdded(){try{const out={};Object.keys(VERBS).forEach(k=>{if(VERBS[k].userAdded)out[k]=VERBS[k];});localStorage.setItem(STORE_KEY,JSON.stringify(out));}catch(e){}}
+function loadAdded(){try{const raw=localStorage.getItem(STORE_KEY);if(!raw)return;const obj=JSON.parse(raw);Object.keys(obj).forEach(k=>{if(!VERBS[k])VERBS[k]=obj[k];});}catch(e){}}
 
-const STORE_KEY="verbgrid_added_v1";
-function saveAdded(){
-  try{
-    const out={};
-    Object.keys(VERBS).forEach(k=>{if(VERBS[k].userAdded)out[k]=VERBS[k];});
-    localStorage.setItem(STORE_KEY,JSON.stringify(out));
-  }catch(e){}
-}
-function loadAdded(){
-  try{
-    const raw=localStorage.getItem(STORE_KEY);
-    if(!raw)return;
-    const obj=JSON.parse(raw);
-    Object.keys(obj).forEach(k=>{if(!VERBS[k])VERBS[k]=obj[k];});
-  }catch(e){}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+
+// The dose-response model. Failure is high at the gentle end (ignored), lowest
+// in the middle (the researched sweet spot), and high at the heavy end
+// (circumvented or collateral damage). The kind of failure changes too.
+function detailFor(name){
+  const d=VERBS[name];
+  const f=d.force;
+  const mech=d.mech||("acting on "+(SLABEL[d.surface]||d.surface).toLowerCase());
+  let journey,holds,fails;
+  if(f<=2){
+    journey=[
+      ["First encounter","At strength "+f+", a light touch. "+cap(mech)+", but most people barely register it."],
+      ["Adaptation","Easy to look past, so it fades into the background within days."],
+      ["Steady state","Behaviour is largely unchanged unless you were already motivated to cut back."]
+    ];
+    holds={when:"the nudge lands right at the decision point and comes with an easy action to take",then:"a motivated user gets a small but real shift"};
+    fails={when:"it is gentle enough to ignore",then:"it becomes wallpaper and nothing changes, the way a bare prompt with no friction did nothing in trials"};
+  } else if(f===3){
+    journey=[
+      ["First encounter","At strength "+f+", a real beat of friction. "+cap(mech)+", noticeable but not a wall."],
+      ["Adaptation","Behaviour reshapes around it across the first weeks."],
+      ["Steady state","The compulsive pattern loosens. This is the researched sweet spot."]
+    ];
+    holds={when:"it keeps a genuine friction with an easy way through",then:d.anchor||"the compulsive pattern measurably loosens"};
+    fails={when:"the novelty wears off and nothing refreshes it",then:"the effect decays as people adapt or take short breaks from it"};
+  } else {
+    journey=[
+      ["First encounter","At strength "+f+", a hard, obvious change. "+cap(mech)+" forcefully, with a sharp short-term drop in use."],
+      ["Adaptation","The friction starts to feel like a wall, and the urge to escape it builds."],
+      ["Steady state","It holds only as a commitment you chose for yourself; otherwise it gets undermined."]
+    ];
+    holds={when:"you set it on yourself as a commitment and it touches only the casino",then:"use drops sharply, at least in the short term"};
+    fails={when:"it is imposed, or blunt enough to catch real people in it",then:"it gets circumvented or uninstalled, or it takes the commons down along with the casino"};
+  }
+  return {journey:journey,holds:holds,fails:fails,risk:RISK[f]||"moderate"};
 }
 
 function populateSurfaceSelect(){
@@ -432,6 +440,7 @@ function pips(force){
   return h;
 }
 
+let selected=null;
 function buildGrid(){
   const g=document.getElementById("grid");
   g.innerHTML="";
@@ -464,7 +473,7 @@ function buildGrid(){
         const b=document.createElement("button");
         b.className="chip"+(v===selected?" active":"");
         b.dataset.verb=v;b.draggable=true;
-        b.innerHTML=(shortlist.has(v)?'<span class="st">&#9733;</span>':"")+v+'<span class="fnum f'+VERBS[v].force+'">'+VERBS[v].force+'</span>';
+        b.innerHTML=(shortlist.has(v)?'<span class="st">&#9733;</span>':"")+v;
         b.onclick=()=>select(v);
         b.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",v);e.dataTransfer.effectAllowed="move";b.classList.add("dragging");});
         b.addEventListener("dragend",()=>b.classList.remove("dragging"));
@@ -477,13 +486,13 @@ function buildGrid(){
   g.appendChild(scroll);
 }
 
-let selected=null;
 function select(v){
   selected=v;
   document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("active",c.dataset.verb===v));
   const d=VERBS[v];
+  const j=detailFor(v);
   const evlabel=d.userAdded?"Predicted, your verb":{strong:"Strong evidence",moderate:"Moderate evidence",thin:"Thin / predicted"}[d.ev];
-  const stages=d.journey.map((s,i)=>`<div class="stage"><div class="n">Stage ${i+1}</div><div class="b">${s[0]}</div><p>${s[1]}</p></div>`).join("");
+  const stages=j.journey.map((s,i)=>`<div class="stage"><div class="n">Stage ${i+1}</div><div class="b">${s[0]}</div><p>${s[1]}</p></div>`).join("");
   const cites=d.cites.map(c=>`<li>${linkify(c)}</li>`).join("");
   const starred=shortlist.has(v);
   document.getElementById("detail").innerHTML=`
@@ -500,12 +509,13 @@ function select(v){
       <span class="evbadge ${d.ev}">${evlabel}</span>
     </div>
     <p class="def">${d.def}</p>
-    <p class="sech">The common path</p>
+    <p class="doesline">Drag it to another column to see how a gentler or heavier version of the same move behaves.</p>
+    <p class="sech">The common path at strength ${d.force}</p>
     <div class="journey">${stages}</div>
     <p class="sech">Where it forks</p>
     <div class="fork">
-      <div class="branch hold"><h4>&#10003; Holds up when</h4><div class="when">${d.holds.when}.</div><div class="then"><span class="arr">&#8594;</span><span>${d.holds.then}.</span></div></div>
-      <div class="branch fail"><h4>&#10007; Breaks down when</h4><div class="when">${d.fails.when}.</div><div class="then"><span class="arr">&#8594;</span><span>${d.fails.then}.</span></div></div>
+      <div class="branch hold"><h4>&#10003; Holds up when</h4><div class="when">${linkify(j.holds.when)}.</div><div class="then"><span class="arr">&#8594;</span><span>${linkify(j.holds.then)}.</span></div></div>
+      <div class="branch fail"><h4>&#10007; Breaks down when <span class="risk ${j.risk}">failure risk ${j.risk}</span></h4><div class="when">${linkify(j.fails.when)}.</div><div class="then"><span class="arr">&#8594;</span><span>${linkify(j.fails.then)}.</span></div></div>
     </div>
     <div class="guard"><span class="lab">The commons check</span>${d.guard}</div>
     <div class="cites"><span class="lab">Grounded in</span><ul>${cites}</ul></div>
@@ -541,7 +551,7 @@ function renderShortlist(){
   if(shortlist.size===0){el.innerHTML='<div class="slempty">Star verbs from the grid and they collect here for the cut.</div>';return;}
   el.innerHTML=[...shortlist].map(v=>{
     const d=VERBS[v];
-    return `<div class="slitem"><span class="nm">${v}</span><span class="fnum">${d.force}</span><span class="meta">${SLABEL[d.surface]||d.surface} &middot; ${d.def}</span><button class="rm" title="remove" onclick="toggleShort('${v}')">&times;</button></div>`;
+    return `<div class="slitem"><span class="nm">${v}</span><span class="fnum">${d.force}/5</span><span class="meta">${SLABEL[d.surface]||d.surface} &middot; ${d.def}</span><button class="rm" title="remove" onclick="toggleShort('${v}')">&times;</button></div>`;
   }).join("");
 }
 
@@ -554,20 +564,14 @@ document.getElementById("copybtn").onclick=()=>{
 
 function predictHeuristic(name,force,surface,desc){
   force=parseInt(force,10)||3;
-  let j;
-  if(force<=2)j=[["First encounter","A light touch you barely notice at first."],["Adaptation","It nudges behaviour gently."],["Steady state","Easy to keep, and easy to ignore."]];
-  else if(force===3)j=[["First encounter","Noticeable but not jarring."],["Adaptation","Behaviour reshapes around it."],["Steady state","Settles into a calmer pattern, if it sticks."]];
-  else j=[["First encounter","A strong, obvious change."],["Adaptation","Friction builds quickly."],["Steady state","It holds only if you chose it, otherwise pressure to undo it grows."]];
   return {
-    surface:surface,force:force,
+    surface:surface,force:force,ev:"thin",userAdded:true,
     def:desc||(name+": a strength "+force+" move on "+(SLABEL[surface]||surface)+"."),
+    mech:"this move on "+(SLABEL[surface]||surface).toLowerCase(),
+    anchor:"the compulsive pattern measurably loosens for motivated users",
     layer:"Inferred from the framework",principle:"Modularity",
-    journey:j,
-    holds:{when:"it targets the casino and leaves real connection alone",then:"it likely shifts behaviour in proportion to its strength"},
-    fails:{when:"it is heavier than the moment needs, or imposed rather than chosen",then:"people route around it or it quietly fades"},
     guard:"Target the casino, leave the commons alone.",
-    cites:["Could not reach the prediction service, so this was estimated from the framework and your chosen strength and surface."],
-    ev:"thin",userAdded:true
+    cites:["Estimated offline from the framework and the dose-response pattern in the friction research (gentle is ignored, the middle works, heavy is circumvented)."]
   };
 }
 
@@ -575,8 +579,8 @@ async function predictAI(name,force,surface,desc){
   const res=await fetch("/.netlify/functions/predict",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name:name,force:force,surface:SLABEL[surface]||surface,desc:desc})});
   if(!res.ok) throw new Error("proxy error");
   const o=await res.json();
-  if(!o.journey||!o.holds||!o.fails) throw new Error("bad shape");
-  return {surface:surface,force:parseInt(force,10)||3,def:o.def,layer:o.layer,principle:o.principle,journey:o.journey,holds:o.holds,fails:o.fails,guard:o.guard,cites:["Predicted from the framework and the cited literature. Closest basis: "+(o.basis||"general patterns")+"."],ev:"thin",userAdded:true};
+  if(!o.def||!o.mech||!o.anchor) throw new Error("bad shape");
+  return {surface:surface,force:parseInt(force,10)||3,ev:"thin",userAdded:true,def:o.def,mech:o.mech,anchor:o.anchor,layer:o.layer||"Inferred",principle:o.principle||"Modularity",guard:o.guard||"Target the casino, leave the commons alone.",cites:["Predicted from the framework and the cited literature. Closest basis: "+(o.basis||"general patterns")+"."]};
 }
 
 async function handleAdd(){
