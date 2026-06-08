@@ -34,6 +34,16 @@
   .card{background:var(--paper);border-radius:20px;padding:22px}
   .card h2{font-family:var(--serif);font-weight:500;font-size:22px;margin-bottom:4px}
   .card .sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+  .presets{display:flex;flex-wrap:wrap;gap:8px}
+  .preset-btn{display:inline-flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:9px 13px;cursor:pointer;color:var(--ink)}
+  .preset-btn:hover{background:#fff}
+  .preset-btn .pname{font-size:14px;font-weight:600}
+  .preset-btn .pverbs{font-size:11.5px;font-weight:500;color:var(--muted)}
+  .preset-btn.clear{color:#9B3329;background:#fff;justify-content:center}
+  .preset-btn.on{background:#fff;box-shadow:0 0 0 2px var(--ink)}
+  .whycomp{margin-top:12px;font-size:12.5px;color:var(--muted)}
+  .whycomp summary{cursor:pointer;font-weight:600;color:#41405a}
+  .whycomp div{margin-top:8px;line-height:1.65;max-width:72ch}
 
   /* GRID MATRIX */
   .gridscroll{overflow-x:auto;padding-bottom:4px}
@@ -151,6 +161,89 @@
   .slitem .fnum{font-size:11px;font-weight:600;color:#fff;background:var(--blue-deep);border-radius:5px;padding:1px 6px}
   .slitem .rm{border:none;background:none;color:#A32D2D;font-size:18px;cursor:pointer;line-height:1}
 
+  /* PHONE PREVIEW */
+  .preview{margin-bottom:20px}
+  .ph-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  .ph-ctrl{font-size:12.5px;font-weight:600;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;cursor:pointer;color:var(--ink)}
+  .ph-ctrl:hover{background:#f3f2fb}
+  .ph-tab{cursor:pointer}
+  .ph-btn{cursor:pointer}
+  .ph-app.on{background:#1b1b22;color:#fff;border-color:#1b1b22}
+  .ph-st{padding:6px 9px;min-width:30px}
+  .ph-st.on{background:#7C84C8;color:#fff;border-color:#7C84C8}
+  .reveal{display:inline-block;margin-left:8px;font-size:10px;font-weight:600;color:#9B3329;background:#FBE4E0;border-radius:6px;padding:1px 6px}
+  .yt-card{padding-bottom:6px}
+  .yt-thumb{height:116px;background:linear-gradient(135deg,#cdd6ea,#e7d6e0);position:relative}
+  .yt-dur{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.72);color:#fff;font-size:10px;padding:1px 5px;border-radius:3px}
+  .yt-meta{display:flex;gap:9px;padding:9px 12px}
+  .yt-ch{width:30px;height:30px;border-radius:50%;background:#d2d2da;flex:none}
+  .yt-tt{font-size:13px;font-weight:600;line-height:1.3}
+  .yt-sub{font-size:11px;color:#8a8a93;margin-top:2px}
+  .ph-card2{margin:14px;border-radius:14px;background:#F6F5FB;border:1px solid #E4E2EE;padding:16px;text-align:center}
+  .ph-card2 .big{font-family:var(--serif);font-size:16px;margin-bottom:5px;color:#41405a}
+  .ph-card2 .sm{font-size:12px;color:#6a6a78}
+  .ph-pinned{display:flex;align-items:center;gap:9px;margin:10px 14px;padding:9px 11px;border:1px solid #EBD08A;background:#FFF6DF;border-radius:10px;font-size:12px}
+  .ph-pinned .ph-av{width:26px;height:26px;flex:none}
+  .ph-feed{height:316px;overflow-y:auto}
+  .ph-like{cursor:pointer;display:inline-block;transition:transform .15s}
+  .ph-like.on{color:#E1306C}
+  .ph-like.pop{transform:scale(1.45)}
+  .ph-skel{height:150px;margin-top:1px;background:linear-gradient(90deg,#ececf2,#f7f7fb,#ececf2);background-size:200% 100%;animation:sh 1.1s linear infinite}
+  @keyframes sh{to{background-position:-200% 0}}
+  .ph-live{position:absolute;left:12px;right:12px;top:66px;background:#fff;border:1px solid #EBC2BC;color:#9B3329;border-radius:10px;padding:9px 12px;font-size:12px;box-shadow:0 8px 20px rgba(0,0,0,.16);transform:translateY(-14px);opacity:0;transition:.28s;z-index:7;pointer-events:none}
+  .ph-live.show{transform:none;opacity:1}
+  .ph-heldbadge{position:absolute;top:40px;right:14px;background:#EDEAFB;color:#3f367e;font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;z-index:6}
+  .yt-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;cursor:pointer;text-shadow:0 1px 5px rgba(0,0,0,.6)}
+  .yt-prog{position:absolute;left:0;bottom:0;height:4px;width:0;background:#c4302b}
+  .yt-prog.play{animation:ytp 6s linear forwards}
+  @keyframes ytp{to{width:100%}}
+  .ph-overlay2{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;background:rgba(27,27,34,.42);z-index:8}
+  .phonewrap{display:flex;justify-content:center;margin-top:6px}
+  .phone{width:300px;border:9px solid #1b1b22;border-radius:34px;background:#fff;overflow:hidden;font-size:13px;color:#1b1b22;position:relative}
+  .ph-status{height:26px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-size:11px;color:#333}
+  .ph-status .dots{letter-spacing:1px}
+  .ph-top{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;border-bottom:1px solid #eee}
+  .ph-wm{font-family:var(--serif);font-weight:600;font-size:19px;color:#1b1b22}
+  .ph-ic{display:flex;gap:13px;align-items:center;font-size:16px;color:#1b1b22;position:relative}
+  .ph-badge{position:absolute;top:-3px;right:13px;width:7px;height:7px;background:#E1306C;border-radius:50%}
+  .ph-toast{background:#EDEAFB;color:#3f367e;font-size:11.5px;padding:6px 12px;text-align:center}
+  .ph-tabs{display:flex;border-bottom:1px solid #eee}
+  .ph-tab{flex:1;text-align:center;padding:8px 0;font-size:12px;color:#8a8a93}
+  .ph-tab.on{color:#1b1b22;font-weight:600;box-shadow:inset 0 -2px 0 #1b1b22}
+  .ph-stories{display:flex;gap:12px;padding:11px 14px;overflow:hidden}
+  .ph-story{width:46px;text-align:center}
+  .ph-ring{width:46px;height:46px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF)}
+  .ph-ring i{display:block;width:100%;height:100%;border-radius:50%;background:#d9d9e0;border:2px solid #fff}
+  .ph-post{padding:0 0 8px}
+  .ph-prow{display:flex;align-items:center;gap:9px;padding:9px 14px}
+  .ph-av{width:30px;height:30px;border-radius:50%;background:#d2d2da}
+  .ph-un{font-weight:600;font-size:13px}
+  .ph-img{height:150px;background:linear-gradient(135deg,#cfd5ea,#e7d9e6)}
+  .ph-acts{display:flex;gap:14px;padding:9px 14px 4px;font-size:18px;color:#1b1b22}
+  .ph-acts .sp{margin-left:auto}
+  .ph-likes{padding:0 14px;font-size:12px;font-weight:600}
+  .ph-cap{padding:3px 14px 0;font-size:12px;color:#333}
+  .ph-divider{display:flex;align-items:center;gap:10px;padding:10px 14px;color:#9a9aa3;font-size:11px}
+  .ph-divider::before,.ph-divider::after{content:"";flex:1;height:1px;background:#eee}
+  .ph-collapsed{margin:0 14px 10px;border:1px dashed #d6d6de;border-radius:10px;padding:12px;text-align:center;color:#8a8a93;font-size:12px}
+  .ph-pill{display:inline-block;margin-top:6px;font-size:11px;font-weight:600;color:#3f367e;background:#EDEAFB;border-radius:999px;padding:3px 10px}
+  .ph-stop{margin:14px;border-radius:14px;background:#F3F7EE;border:1px solid #DDE8CF;padding:22px 16px;text-align:center}
+  .ph-stop .big{font-family:var(--serif);font-size:17px;color:#3B6D11;margin-bottom:6px}
+  .ph-stop .sm{font-size:12px;color:#5b6b48}
+  .ph-off{margin:14px;border-radius:14px;background:#F6F5FB;border:1px solid #E4E2EE;padding:30px 16px;text-align:center}
+  .ph-off .big{font-family:var(--serif);font-size:17px;color:#41405a;margin-bottom:6px}
+  .ph-off .sm{font-size:12px;color:#6a6a78}
+  .ph-overlay{position:relative}
+  .ph-dim{filter:blur(2px);opacity:.5}
+  .ph-modal{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:rgba(27,27,34,.34)}
+  .ph-card{background:#fff;border-radius:14px;padding:18px 16px;width:86%}
+  .ph-card .big{font-family:var(--serif);font-size:16px;margin-bottom:4px}
+  .ph-card .sm{font-size:12px;color:#555;margin-bottom:12px}
+  .ph-btn{display:inline-block;background:#1b1b22;color:#fff;font-size:12.5px;font-weight:600;border-radius:9px;padding:9px 16px}
+  .ph-nav{display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #eee;font-size:18px;color:#1b1b22}
+  .ph-nav .off{color:#c7c7cf}
+  .ph-note{text-align:center;font-size:12px;color:var(--muted);margin-top:9px}
+
   @media(max-width:620px){
     h1{font-size:30px}
     .fork{grid-template-columns:1fr}
@@ -171,6 +264,14 @@
   </header>
 
   <div class="layout">
+    <section class="card" id="presetcard">
+      <h2>Start here, build your layer</h2>
+      <div class="sub">Each starting point is a stack of verbs at set strengths. Stack as many as you like, they add to your layer, and where two overlap the most recent strength wins. Then open any verb to tune it. The verbs are the real controls.</div>
+      <div class="presets" id="presets"></div>
+      <div id="presetmsg" style="font-size:12.5px;color:var(--muted);margin-top:10px;min-height:16px"></div>
+      <details class="whycomp"><summary>Why does stacking ease the strong ones down?</summary><div>One change usually helps. A pile of strong changes at once tends to backfire: people feel boxed in and either get anxious or switch the whole thing off. The evidence points the same way. Batching alerts a few times a day helped, but turning them off entirely made people more anxious (Fitz and colleagues, 2019). Hard blocks are the most worked-around tool there is (Lyngs and colleagues, 2019), and people under heavy limits take breaks and rebound (Haliburton and colleagues, 2024). The helpful zone is the middle. So as you stack more sets, the layer eases only the heaviest verbs back toward that middle, never pushes the gentle ones lower, and never goes below the middle. The exact step is a careful design choice, not a measured number, so you can override any verb by hand.</div></details>
+    </section>
+
     <section class="card">
       <h2>The grid</h2>
       <div class="sub">Down the side, where in the app it acts. Across the top, how forceful it is: green and gentle at 1, red and paternalistic at 5. Drag a verb to any cell to change where and how hard it acts.</div>
@@ -206,8 +307,8 @@
     </section>
 
     <section class="card" id="shortcard">
-      <h2>Your shortlist</h2>
-      <div class="sub">Verbs you have starred, kept here for the cut. Cleared on refresh.</div>
+      <h2>Your layer</h2>
+      <div class="sub">The verbs in your layer, each at its strength and surface. This is the configuration the layer would actually run. Cleared on refresh.</div>
       <div class="slhead"><span class="count" id="slcount">0 verbs</span><button class="copybtn" id="copybtn">Copy as text</button></div>
       <div id="shortlist"></div>
     </section>
@@ -292,6 +393,13 @@ const VERBS={
     layer:"Casino (risks Commons)",principle:"Modularity",
     guard:"Never block a whole app if real conversation lives inside it.",
     cites:["Lyngs et al. 2019, CHI (block and removal is the most common and most circumvented strategy).","Haliburton et al. 2024, CHI (users take breaks from restrictions and rebound)."]},
+  Divert:{surface:"feed",force:2,ev:"thin",
+    def:"Redirects attention away from the feed and toward something offline you chose.",
+    mech:"sending you somewhere better than the feed",
+    anchor:"the pull is intercepted and pointed at an offline reward",
+    layer:"Casino + Reverse reward",principle:"Reverse Reward Loop",
+    guard:"Divert away from the casino, not away from a person mid-conversation.",
+    cites:["Predicted from the reverse-reward principle and the interstitial-friction literature (Grüning et al. 2023)."]},
 
   Cap:{surface:"scroll",force:4,ev:"moderate",
     def:"Puts a ceiling on how much you can consume in a sitting.",
@@ -428,6 +536,157 @@ function detailFor(name){
   return {journey:journey,holds:holds,fails:fails,risk:RISK[f]||"moderate"};
 }
 
+const PH_STATUS='<div class="ph-status"><span>9:41</span><span class="dots">&#9679;&#9679;&#9679;</span></div>';
+const PH_STORIES='<div class="ph-stories">'+'<div class="ph-story"><div class="ph-ring"><i></i></div></div>'.repeat(5)+'</div>';
+const PH_POST='<div class="ph-post"><div class="ph-prow"><span class="ph-av"></span><span class="ph-un">a_friend</span></div><div class="ph-img"></div><div class="ph-acts"><span>&#9825;</span><span>&#128172;</span><span>&#9992;</span><span class="sp">&#128278;</span></div><div class="ph-likes">128 likes</div><div class="ph-cap"><b>a_friend</b> out on the hills today</div></div>';
+const PH_NAV='<div class="ph-nav"><span>&#8962;</span><span>&#9906;</span><span>&#9655;</span><span>&#128722;</span><span>&#128100;</span></div>';
+const PH_TOP='<div class="ph-top"><span class="ph-wm">feed</span><span class="ph-ic">&#9825;<span class="ph-badge"></span> &#9992;</span></div>';
+const ACTIONLABEL={Mute:"Send a notification",Block:"Open anyway"};
+var phState={}, phTimers=[];
+function hasPreview(v){return VERBS[v] && !VERBS[v].userAdded;}
+function phClear(){phTimers.forEach(function(t){clearInterval(t);clearTimeout(t);});phTimers=[];}
+function F(){return phState.force;}
+
+function igItem(i){
+  var s=phState,f=s.force,hide=(s.verb==='Strip'&&f>=3),dim=(s.verb==='Strip'&&f>0&&f<=2);
+  var tag='';
+  if(s.verb==='Reveal'&&f>0&&i%2===0){tag=f>=4?'<span class="reveal" style="background:#F4C7C0">shown only to keep you scrolling</span>':'<span class="reveal" style="background:#F0EFF7;color:#6a6a78">recommended</span>';}
+  var dec=(s.verb==='Decay'&&f>0)?'<span style="margin-left:auto;font-size:11px;color:#8a8a93">expires in '+decayWin()+'</span>':'';
+  var likes=hide?'<div class="ph-likes" style="color:#8a8a93">Likes hidden</div>':'<div class="ph-likes"'+(dim?' style="color:#c2c2cc"':'')+'><span id="lk'+i+'">'+(80+i*7)+'</span> likes</div>';
+  return '<div class="ph-post" data-id="'+i+'"><div class="ph-prow"><span class="ph-av"></span><span class="ph-un">user_'+i+'</span>'+tag+dec+'</div><div class="ph-img"></div><div class="ph-acts"><span class="ph-like" data-id="'+i+'">&#9825;</span><span>&#128172;</span><span>&#9992;</span><span class="sp">&#128278;</span></div>'+likes+'<div class="ph-cap"><b>user_'+i+'</b> a small moment from today</div></div>';
+}
+function ytItem(i){
+  var s=phState,f=s.force,hide=(s.verb==='Strip'&&f>=3);
+  return '<div class="yt-card" data-id="'+i+'"><div class="yt-thumb"><span class="yt-play" data-id="'+i+'">&#9654;</span><span class="yt-prog" id="pg'+i+'"></span><span class="yt-dur">1'+(i%6)+':2'+(i%6)+'</span></div><div class="yt-meta"><span class="yt-ch"></span><div><div class="yt-tt">A video worth your evening, no. '+i+'</div><div class="yt-sub">channel_'+i+' &middot; '+(hide?'views hidden':((i*13+5)+'k views'))+'</div></div></div></div>';
+}
+function itemHTML(i){return phState.app==='yt'?ytItem(i):igItem(i);}
+function feedItems(n){var h='';for(var i=0;i<n;i++){h+=itemHTML(phState.count++);}return h;}
+function decayWin(){var f=phState.force;return f<=1?'6h':f===2?'3h':f===3?'2h':f===4?'45m':'15m';}
+
+function topBar(){
+  var s=phState,muted=(s.verb==='Mute'&&s.force>0);
+  if(s.app==='yt')return '<div class="ph-top"><span class="ph-wm" style="font-family:var(--sans);font-weight:800;color:#c4302b">tube</span><span class="ph-ic">&#9906; '+(muted?'&#128263;':'&#128276;')+(!muted&&s.pings>0?'<span class="ph-badge"></span>':'')+'</span></div>';
+  return '<div class="ph-top"><span class="ph-wm">feed</span><span class="ph-ic">'+(muted?'&#128263; ':'')+'&#9825;'+(!muted&&s.pings>0?'<span class="ph-badge"></span>':'')+' &#9992;</span></div>';
+}
+function navBar(off){
+  if(phState.app==='yt')return '<div class="ph-nav">'+(off?'<span class="off">&#8962;</span><span class="off">&#9655;</span>':'<span>&#8962;</span><span>&#9655;</span>')+'<span>&#8853;</span><span>&#9776;</span><span>&#128100;</span></div>';
+  return '<div class="ph-nav">'+(off?'<span class="off">&#8962;</span><span>&#9906;</span><span class="off">&#9655;</span>':'<span>&#8962;</span><span>&#9906;</span><span>&#9655;</span>')+'<span>&#128722;</span><span>&#128100;</span></div>';
+}
+function phTabsList(){return phState.app==='yt'?['Subscriptions','Recommended','Explore']:['Friends','Following','Algorithm'];}
+function s_tab(){var t=phState.tab,l=phTabsList();return l.indexOf(t)<0?l[0]:t;}
+function banner(txt,good){return '<div class="ph-toast"'+(good?'':' style="background:#FBE4E0;color:#9B3329"')+'>'+txt+'</div>';}
+function digestCard(){return '<div class="ph-card2"><div class="big">Today in '+(phState.force>=4?'five':'a few')+' lines</div><div class="sm" style="text-align:left;margin-top:8px;line-height:1.8">&bull; two friends posted from the coast<br>&bull; your team shipped the update<br>&bull; one event this weekend<br>&bull; a reply waiting from sam<br>&bull; nothing else needs you</div></div>';}
+
+function headerInFeed(){
+  var v=phState.verb,f=phState.force; if(f===0)return banner('default app, no verb applied',false);
+  if(v==='Reorder')return banner(f<=2?'mostly newest, light reshuffle':f===3?'newest first, your order':'strictly chronological, ranking off',true);
+  if(v==='Slow')return banner(f<=2?'a touch slower':f===3?'paced, scroll for the next':'one at a time, deliberate pauses',true);
+  if(v==='Decay')return banner('items expire in '+decayWin()+', nothing piles up',true);
+  if(v==='Aggregate')return banner(f<=2?'alerts lightly grouped':f===3?'batched into 9am and 6pm':'strict, twice a day only',true);
+  if(v==='Strip')return banner(f<=2?'counts dimmed':'like and view counts hidden',true);
+  if(v==='Reveal')return banner(f<=2?'a quiet label on some items':'every item flagged with why it is shown',true);
+  if(v==='Mute')return banner(f<=2?'quiet, badges off, still there if you look':f===3?'held and delivered in batches':'fully silent, you may miss things',true);
+  if(v==='Summarize')return banner('a digest sits at the top'+(f>=3?', scroll trimmed':''),true);
+  if(v==='Pin')return '<div class="ph-pinned"><span class="ph-av"></span><div><b>sam</b>, pinned above the churn<br><span style="color:#8a8a93">'+(f>=4?'and the rest is hidden':'someone you actually know')+'</span></div></div>';
+  if(v==='Reflect')return f<=2?banner('22 min today',true):'<div class="ph-card2"><div class="big">You, today</div><div class="sm"><span id="phmin">22</span> minutes, 3 opens. Shown plainly, no nudge.</div></div>';
+  if(v==='Reward')return f<=2?banner('+1 to your offline list',true):'<div class="ph-card2" style="background:#EAF5E1;border-color:#DDE8CF"><div class="big" style="color:#3B6D11">3 days lighter</div><div class="sm">Reclaimed time went to your offline list. +1.</div></div>';
+  if(v==='Cooldown')return '<div class="ph-card2"><div class="big">Just checked</div><div class="sm">Refresh unlocks in <span id="phcd">'+(f*6)+'</span>s.</div></div>';
+  if(v==='Separate'){
+    if(f<=2)return banner('one feed, but algorithm posts are labelled',true);
+    if(f===3){var act=s_tab(),tabs=phTabsList();return '<div class="ph-tabs">'+tabs.map(function(x){return '<div class="ph-tab'+(x===act?' on':'')+'" onclick="phTab(\''+x+'\')">'+x+'</div>';}).join('')+'</div>';}
+    return banner('algorithm feed hidden, only people you chose',true);
+  }
+  if(v==='Schedule'&&f<=2)return banner('winding down, closes at 6pm',true);
+  if(v==='Quarantine'&&f<=2)return banner('recommendations kept below, clearly labelled',true);
+  if(v==='Quarantine'&&f>=4)return banner('recommendations off entirely',true);
+  if(v==='Block'&&f<=2)return banner('a gentle nudge: you meant to step back. still here if you need it',true);
+  return '';
+}
+
+function ovBox(big,sm,btn,show,wait){return '<div class="ph-overlay2" id="phov" style="display:'+(show?'flex':'none')+'"><div class="ph-card"><div class="big">'+big+'</div><div class="sm">'+sm+'</div><span class="ph-btn" id="phgo"'+(wait?' style="opacity:.45;pointer-events:none"':'')+' onclick="phReset()">'+(wait?'Wait...':btn)+'</span></div></div>';}
+function overlayHTML(){
+  var v=phState.verb,f=phState.force; if(f===0)return '';
+  if(v==='Gate')return ovBox('Why are you opening this?',f>=4?'Sit with it for a moment.':'A pause before you go in.','Continue',true,f>=4);
+  if(v==='Quarantine'&&f===3)return ovBox('Recommendations are behind a door','Opt in on purpose, or stay out.','Open recommendations',true,false);
+  if(v==='Block'&&f===3)return ovBox('Take a break?','You set this. You can still go in if you mean to.','Open anyway',true,false);
+  if(v==='Schedule'&&f===3)return ovBox('Closed for now','Outside your hours. Open if you must.','Open anyway',true,false);
+  if(v==='Divert')return ovBox(f<=2?'A gentle nudge':'Your time is up',f<=2?'You can dismiss this and keep going.':'Here is what you said you would rather do.',f<=2?'Dismiss':'Open your walk playlist',false,false);
+  return '';
+}
+
+function buildShell(){
+  var f=phState.force,v=phState.verb,top=topBar(); phState.count=0;
+  if(v==='Block'&&f>=4)return top+'<div class="ph-off"><div class="big">The '+(phState.app==='yt'?'app':'feed')+' is off</div><div class="sm">'+(f>=5?'Locked until 5:00pm. No early open.':'Off until 5:00pm.')+'</div></div>'+navBar(true);
+  if(v==='Schedule'&&f>=4)return top+'<div class="ph-off"><div class="big">Closed, 9am to 6pm</div><div class="sm">'+(f>=5?'Hard closed. Opens 9:00am.':'Closed now. Opens 9:00am.')+'</div></div>'+navBar(true);
+  if(v==='Summarize'&&f>=4)return top+digestCard()+navBar(false);
+  var held=((v==='Mute'||v==='Aggregate')&&f>0&&f<=3)?'<div class="ph-heldbadge" id="pheld">0 held</div>':'';
+  var nItems=(v==='Pin'&&f>=4)?1:6;
+  var feed='<div class="ph-feed" id="phfeed">'+headerInFeed()+feedItems(nItems)+'</div>';
+  return top+held+'<div class="ph-live" id="phlive"></div>'+feed+overlayHTML()+navBar(false);
+}
+
+function pingTick(){
+  var f=phState.force; phState.pings=(phState.pings||0)+1;
+  if(f===0){var l=document.getElementById('phlive');if(l){l.innerHTML='&#128276; new alert, just now';l.classList.add('show');setTimeout(function(){l.classList.remove('show');},1500);}return;}
+  if(f>=4)return; // fully silent, dropped
+  var b=document.getElementById('pheld');if(b)b.textContent=phState.pings+(f<=2?' quiet':' held');
+}
+function startPingLoop(){phTimers.push(setInterval(pingTick,2600));}
+function startCooldown(){phState.cd=phState.force*6;var id=setInterval(function(){phState.cd--;var el=document.getElementById('phcd');if(el)el.textContent=phState.cd>0?phState.cd:0;if(phState.cd<=0){clearInterval(id);if(el&&el.parentNode)el.parentNode.innerHTML='Refresh unlocked. The wave passed without you.';}},1000);phTimers.push(id);}
+function startReflect(){phState.min=22;phTimers.push(setInterval(function(){phState.min++;var el=document.getElementById('phmin');if(el)el.textContent=phState.min;},1500));}
+
+function onScroll(f){
+  var v=phState.verb,fr=phState.force;
+  if(v==='Divert'&&fr>0&&!phState.opened&&f.scrollTop>240){var ov=document.getElementById('phov');if(ov){ov.style.display='flex';phState.opened='shown';}}
+  if(f.scrollTop+f.clientHeight < f.scrollHeight-50)return;
+  if(phState.loading||phState.capped)return;
+  if(v==='Cap'&&fr>0&&phState.count>=9){
+    if(fr>=4){f.insertAdjacentHTML('beforeend','<div class="ph-stop"><div class="big">That is your 10 for today</div><div class="sm">The feed ends here. No more today.</div></div>');phState.capped=true;return;}
+    if(!phState.prompted){f.insertAdjacentHTML('beforeend','<div class="ph-stop"><div class="big">You have seen your 10</div><div class="sm">'+(fr===3?'You can extend if you really want.':'Keep going if you like, your call.')+'</div><span class="ph-btn" onclick="phMore()" style="margin-top:8px">Keep going</span></div>');phState.prompted=true;}
+    return;
+  }
+  phState.loading=true;var tok=phState.token;
+  var sk=document.createElement('div');sk.className='ph-skel';sk.id='phsk';f.appendChild(sk);
+  var delay=(v==='Slow'&&fr>0)?(fr*400+300):600;
+  phTimers.push(setTimeout(function(){if(phState.token!==tok)return;var s2=document.getElementById('phsk');if(s2)s2.remove();f.insertAdjacentHTML('beforeend',feedItems(3));phState.loading=false;},delay));
+}
+
+function bindLive(){
+  var f=document.getElementById('phfeed');
+  if(f){
+    f.addEventListener('click',function(e){var t=e.target;
+      if(t.classList&&t.classList.contains('ph-like')){t.classList.toggle('on');t.classList.add('pop');setTimeout(function(){t.classList.remove('pop');},170);var id=t.getAttribute('data-id');var c=document.getElementById('lk'+id);if(c){var n=parseInt(c.textContent,10)||0;c.textContent=t.classList.contains('on')?n+1:n-1;}}
+      if(t.classList&&t.classList.contains('yt-play')){var id2=t.getAttribute('data-id');var p=document.getElementById('pg'+id2);if(p)p.classList.add('play');t.style.display='none';}
+    });
+    f.addEventListener('scroll',function(){onScroll(f);});
+  }
+  if(phState.verb==='Mute'||phState.verb==='Aggregate')startPingLoop();
+  if(phState.verb==='Cooldown'&&phState.force>0)startCooldown();
+  if(phState.verb==='Reflect'&&phState.force>0)startReflect();
+  if(phState.verb==='Gate'&&phState.force>=4){phTimers.push(setTimeout(function(){var g=document.getElementById('phgo');if(g){g.style.opacity='1';g.style.pointerEvents='auto';g.textContent='Continue';}},2200));}
+}
+
+function strengthControls(){var f=phState.force,h='';for(var k=0;k<=5;k++){h+='<button class="ph-ctrl ph-st'+(k===f?' on':'')+'" data-f="'+k+'" onclick="phForce('+k+')">'+(k===0?'off':k)+'</button>';}return h;}
+function updateControls(){document.querySelectorAll('.ph-app').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-app')===phState.app);});document.querySelectorAll('.ph-st').forEach(function(b){b.classList.toggle('on',parseInt(b.getAttribute('data-f'),10)===phState.force);});}
+function phMount(){phState.token=(phState.token||0)+1;phClear();var el=document.getElementById('phscreen');if(!el)return;el.innerHTML=buildShell();bindLive();updateControls();}
+function resetTransient(){phState.pings=0;phState.count=0;phState.opened=false;phState.loading=false;phState.capped=false;phState.prompted=false;}
+function phInit(v){phClear();phState={verb:v,app:'ig',force:(VERBS[v]?VERBS[v].force:3),pings:0,count:0,tab:'Friends',opened:false,loading:false,capped:false,prompted:false,token:0};phMount();}
+function phForce(k){phState.force=k;resetTransient();phMount();}
+function phApp(a){phState.app=a;phState.tab=phTabsList()[0];resetTransient();phMount();}
+function phTab(t){phState.tab=t;phMount();}
+function phReset(){var ov=document.getElementById('phov');if(ov)ov.style.display='none';phState.opened=true;}
+function phMore(){var fd=document.getElementById('phfeed');if(fd)fd.insertAdjacentHTML('beforeend',feedItems(3));phState.prompted=false;}
+function phAction(){if(phState.verb==='Mute')pingTick();else if(phState.verb==='Block'){phState.force=0;resetTransient();phMount();}}
+window.phForce=phForce;window.phApp=phApp;window.phTab=phTab;window.phReset=phReset;window.phMore=phMore;window.phAction=phAction;
+
+function renderPreview(v){
+  if(!hasPreview(v))return '';
+  var controls='<button class="ph-ctrl ph-app on" data-app="ig" onclick="phApp(\'ig\')">Instagram</button><button class="ph-ctrl ph-app" data-app="yt" onclick="phApp(\'yt\')">YouTube</button>';
+  controls+='<span style="display:inline-flex;gap:4px;align-items:center;margin-left:4px"><span style="font-size:11px;color:var(--muted);font-weight:600">strength</span>'+strengthControls()+'</span>';
+  if(ACTIONLABEL[v])controls+='<button class="ph-ctrl" onclick="phAction()">'+ACTIONLABEL[v]+'</button>';
+  return '<p class="sech">How it looks</p><div class="preview"><div class="ph-controls">'+controls+'</div><div class="phonewrap"><div class="phone"><div id="phscreen"></div></div></div><div class="ph-note">Live. Set the strength 0 to 5 and watch it change, scroll, tap to like, switch app. Generic placeholders, not the real apps\u2019 assets.</div></div>';
+}
+
 function populateSurfaceSelect(){
   const sel=document.getElementById("vsurface");
   sel.innerHTML=SURFACES.map((s,i)=>`<option value="${s[0]}"${i===0?" selected":""}>${s[1]}</option>`).join("");
@@ -498,7 +757,7 @@ function select(v){
   document.getElementById("detail").innerHTML=`
     <div class="dhead">
       <h2>${v}</h2>
-      <button class="star-btn ${starred?"on":""}" onclick="toggleShort('${v}')">${starred?"&#9733; Shortlisted":"&#9734; Shortlist"}</button>
+      <button class="star-btn ${starred?"on":""}" onclick="toggleShort('${v}')">${starred?"&#9733; In your layer":"&#9734; Add to layer"}</button>
       <button class="del-btn" onclick="removeVerb('${v}')">Remove</button>
     </div>
     <div class="tags">
@@ -517,14 +776,17 @@ function select(v){
       <div class="branch hold"><h4>&#10003; Holds up when</h4><div class="when">${linkify(j.holds.when)}.</div><div class="then"><span class="arr">&#8594;</span><span>${linkify(j.holds.then)}.</span></div></div>
       <div class="branch fail"><h4>&#10007; Breaks down when <span class="risk ${j.risk}">failure risk ${j.risk}</span></h4><div class="when">${linkify(j.fails.when)}.</div><div class="then"><span class="arr">&#8594;</span><span>${linkify(j.fails.then)}.</span></div></div>
     </div>
+    ${renderPreview(v)}
     <div class="guard"><span class="lab">The commons check</span>${d.guard}</div>
     <div class="cites"><span class="lab">Grounded in</span><ul>${cites}</ul></div>
   `;
+  if(hasPreview(v))phInit(v);
   document.getElementById("detail").scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 function toggleShort(v){
-  if(shortlist.has(v))shortlist.delete(v);else shortlist.add(v);
+  if(shortlist.has(v)){shortlist.delete(v);manualVerbs.delete(v);}
+  else{shortlist.add(v);manualVerbs.add(v);}
   buildGrid();
   if(selected===v)select(v);
   renderShortlist();
@@ -548,7 +810,7 @@ window.removeVerb=removeVerb;
 function renderShortlist(){
   const el=document.getElementById("shortlist");
   document.getElementById("slcount").textContent=shortlist.size+(shortlist.size===1?" verb":" verbs");
-  if(shortlist.size===0){el.innerHTML='<div class="slempty">Star verbs from the grid and they collect here for the cut.</div>';return;}
+  if(shortlist.size===0){el.innerHTML='<div class="slempty">Add verbs to your layer, or pick a starting point at the top.</div>';return;}
   el.innerHTML=[...shortlist].map(v=>{
     const d=VERBS[v];
     return `<div class="slitem"><span class="nm">${v}</span><span class="fnum">${d.force}/5</span><span class="meta">${SLABEL[d.surface]||d.surface} &middot; ${d.def}</span><button class="rm" title="remove" onclick="toggleShort('${v}')">&times;</button></div>`;
@@ -561,6 +823,49 @@ document.getElementById("copybtn").onclick=()=>{
   navigator.clipboard&&navigator.clipboard.writeText(txt);
   const btn=document.getElementById("copybtn");const o=btn.textContent;btn.textContent="Copied";setTimeout(()=>btn.textContent=o,1200);
 };
+
+const PRESETS={
+  "Quiet the noise":{Mute:3,Aggregate:2,Cooldown:3},
+  "End the scroll":{Cap:4,Divert:3,Reorder:2},
+  "Keep people, cut the casino":{Separate:3,Pin:1,Quarantine:3},
+  "Go minimal":{Block:5,Schedule:3,Strip:4}
+};
+var activePresets=new Set();
+var manualVerbs=new Set();
+function compensate(base,n){if(base<=3)return base;var f=base-(n-1);return f<3?3:f;}
+function recomputeLayer(){
+  var presetForce={};
+  activePresets.forEach(function(nm){var p=PRESETS[nm];Object.keys(p).forEach(function(v){presetForce[v]=Math.max(presetForce[v]||0,p[v]);});});
+  var n=activePresets.size,eased=false;
+  shortlist.clear();
+  Object.keys(presetForce).forEach(function(v){if(VERBS[v]){var nf=compensate(presetForce[v],n);if(nf<presetForce[v])eased=true;VERBS[v].force=nf;shortlist.add(v);}});
+  manualVerbs.forEach(function(v){if(VERBS[v])shortlist.add(v);});
+  buildGrid();renderShortlist();renderPresets();
+  var m=document.getElementById("presetmsg");
+  if(m){
+    if(n===0)m.textContent="No presets selected.";
+    else if(n>=2&&eased)m.textContent="Stacking "+n+" sets. A pile of strong changes at once tends to backfire, so the heaviest verbs have been eased back toward the middle, where the evidence says they help most. Open any verb to override.";
+    else m.textContent=n+" set"+(n>1?"s":"")+" in your layer.";
+  }
+}
+function applyPreset(name){
+  if(!PRESETS[name])return;
+  if(activePresets.has(name))activePresets.delete(name);else activePresets.add(name);
+  recomputeLayer();
+  if(activePresets.has(name)){var first=Object.keys(PRESETS[name])[0];if(VERBS[first])select(first);}
+}
+function clearLayer(){activePresets.clear();manualVerbs.clear();shortlist.clear();buildGrid();renderShortlist();renderPresets();var m=document.getElementById("presetmsg");if(m)m.textContent="Layer cleared.";}
+function renderPresets(){
+  var el=document.getElementById("presets");if(!el)return;
+  var h=Object.keys(PRESETS).map(function(name){
+    var verbs=Object.keys(PRESETS[name]).map(function(v){return v+' '+PRESETS[name][v];}).join(' &middot; ');
+    var on=activePresets.has(name);
+    return '<button class="preset-btn'+(on?' on':'')+'" onclick="applyPreset(\''+name+'\')"><span class="pname">'+(on?'&#10003; ':'')+name+'</span><span class="pverbs">'+verbs+'</span></button>';
+  }).join('');
+  h+='<button class="preset-btn clear" onclick="clearLayer()"><span class="pname">Clear</span></button>';
+  el.innerHTML=h;
+}
+window.applyPreset=applyPreset;window.clearLayer=clearLayer;
 
 function predictHeuristic(name,force,surface,desc){
   force=parseInt(force,10)||3;
@@ -606,6 +911,7 @@ async function handleAdd(){
 document.getElementById("addbtn").onclick=handleAdd;
 populateSurfaceSelect();
 loadAdded();
+renderPresets();
 buildGrid();
 renderShortlist();
 </script>
