@@ -44,24 +44,31 @@
   .whycomp{margin-top:12px;font-size:12.5px;color:var(--muted)}
   .whycomp summary{cursor:pointer;font-weight:600;color:#41405a}
   .whycomp div{margin-top:8px;line-height:1.65;max-width:72ch}
+  .autowhen{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#41405a;margin-bottom:12px;cursor:pointer}
+  .whentabs{display:flex;flex-wrap:wrap;gap:8px}
+  .when-btn{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:#fafafe;cursor:pointer;font-family:inherit}
+  .when-btn.on{background:#fff;box-shadow:0 0 0 2px var(--ink)}
+  .when-btn .wname{font-weight:600;font-size:14px;color:#2c2a3a}
+  .when-btn .wwhen{font-size:11.5px;color:var(--muted)}
+  .livenow{font-weight:700;font-size:10px;color:#3B6D11;background:#EAF5E1;padding:1px 6px;border-radius:999px;margin-left:4px;text-transform:uppercase;letter-spacing:.03em}
 
   /* GRID MATRIX */
   .gridscroll{overflow-x:auto;padding-bottom:4px}
-  .grid2{display:grid;grid-template-columns:148px repeat(5,minmax(96px,1fr));gap:6px;min-width:660px}
+  .grid2{display:grid;grid-template-columns:148px repeat(3,minmax(120px,1fr));gap:6px;min-width:560px}
   .gcorner{font-size:10.5px;font-weight:600;color:var(--muted);display:flex;align-items:flex-end;padding:0 6px 8px 0}
   .colh{font-size:13px;font-weight:600;color:#41405a;text-align:center;padding:0 0 8px;border-bottom:2px solid var(--line)}
   .colh small{display:block;font-size:10px;font-weight:400;color:var(--muted)}
   .colh.h1{color:#3C7A2A}
-  .colh.h2{color:#5E7A1F}
-  .colh.h3{color:#9A7212}
+  .colh.h2{color:#9A7212}
+  .colh.h3{color:#9A2C22}
   .colh.h4{color:#A8541C}
   .colh.h5{color:#9A2C22}
   .rlabel{font-size:13.5px;font-weight:600;color:#2B2B33;display:flex;flex-direction:column;justify-content:center;padding:10px 8px 10px 0;border-top:1px solid var(--line)}
   .rlabel small{font-size:10.5px;font-weight:400;color:var(--muted);margin-top:2px}
   .cell{border-top:1px solid var(--line);min-height:52px;padding:7px 5px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
   .cell.c1{background:#E7F4DD}
-  .cell.c2{background:#EFF3D0}
-  .cell.c3{background:#F8F0CC}
+  .cell.c2{background:#F8F0CC}
+  .cell.c3{background:#F6D4CD}
   .cell.c4{background:#F8E1C9}
   .cell.c5{background:#F6D4CD}
   .cell.dragover{outline:2px dashed var(--ink);outline-offset:-3px}
@@ -86,8 +93,8 @@
   .pip{width:16px;height:8px;border-radius:3px;background:var(--line)}
   .pip.on{background:var(--blue-deep)}
   .pip.on.p1{background:#4E9E3A}
-  .pip.on.p2{background:#84A52C}
-  .pip.on.p3{background:#C9971C}
+  .pip.on.p2{background:#C9971C}
+  .pip.on.p3{background:#C23B2E}
   .pip.on.p4{background:#D9712A}
   .pip.on.p5{background:#C23B2E}
   .fmeter .flabel{font-size:11.5px;font-weight:600;color:#41405a}
@@ -255,7 +262,7 @@
   <header>
     <div class="eyebrow">The grid and the test</div>
     <h1>What each verb does to a user</h1>
-    <p class="lede">Each row is a place in the app. Each column is how forceful the move is, green and gentle on the left, red and paternalistic on the right. Drag a verb to a new column and its journey changes, because strength is not neutral: too gentle and it is ignored, the middle is where behaviour shifts, too heavy and it is circumvented or it damages the connection it was never meant to touch. Select a verb to see this, and star the keepers for the shortlist below.</p>
+    <p class="lede">Each row is a place in the app. Each column is how forceful the move is, green and gentle on the left, red and strong on the right. Drag a verb to a new column and its journey changes, because strength is not neutral: too gentle and it is ignored, the middle is where behaviour shifts, too heavy and it is circumvented or it damages the connection it was never meant to touch. Select a verb to see this, and star the keepers for the shortlist below.</p>
     <div class="legend">
       <span class="ev s">Strong — direct field experiment</span>
       <span class="ev m">Moderate — adjacent or mixed evidence</span>
@@ -264,6 +271,14 @@
   </header>
 
   <div class="layout">
+    <section class="card" id="whencard">
+      <h2>When</h2>
+      <div class="sub">The same layer can act differently at different times. Each profile holds its own verbs and strengths over the same set of moves. Switch between them by hand, or let the layer follow the clock and change itself.</div>
+      <label class="autowhen"><input type="checkbox" id="autowhen" onchange="toggleAuto()"> Follow the clock</label>
+      <div class="whentabs" id="whentabs"></div>
+      <div id="whenmsg" style="font-size:12.5px;color:var(--muted);margin-top:10px;min-height:16px"></div>
+    </section>
+
     <section class="card" id="presetcard">
       <h2>Start here, build your layer</h2>
       <div class="sub">Each starting point is a stack of verbs at set strengths. Stack as many as you like, they add to your layer, and where two overlap the most recent strength wins. Then open any verb to tune it. The verbs are the real controls.</div>
@@ -274,7 +289,7 @@
 
     <section class="card">
       <h2>The grid</h2>
-      <div class="sub">Down the side, where in the app it acts. Across the top, how forceful it is: green and gentle at 1, red and paternalistic at 5. Drag a verb to any cell to change where and how hard it acts.</div>
+      <div class="sub">Down the side, where in the app it acts. Across the top, how forceful it is: green and gentle at 1, red and strong at 3. Drag a verb to any cell to change where and how hard it acts.</div>
       <div id="grid"></div>
     </section>
 
@@ -286,10 +301,8 @@
         <label class="field"><span class="flab">strength</span>
           <select id="vforce">
             <option value="1">1 gentle</option>
-            <option value="2">2 light</option>
-            <option value="3" selected>3 moderate</option>
-            <option value="4">4 strong</option>
-            <option value="5">5 paternalistic</option>
+            <option value="2" selected>2 moderate</option>
+            <option value="3">3 strong</option>
           </select>
         </label>
         <label class="field"><span class="flab">where</span>
@@ -298,7 +311,7 @@
         <input id="vdesc" type="text" placeholder="What does it do? (optional)" maxlength="120">
         <button id="addbtn">Add and predict</button>
       </div>
-      <div class="hint"><b>Strength</b> is how forceful the move is, 1 gentle to 5 paternalistic. <b>Where</b> is the part of the app it touches. Drag it across columns afterwards to see the strength change its story.</div>
+      <div class="hint"><b>Strength</b> is how forceful the move is, 1 gentle to 3 strong. <b>Where</b> is the part of the app it touches. Drag it across columns afterwards to see the strength change its story.</div>
       <div class="addmsg" id="addmsg"></div>
     </section>
 
@@ -343,21 +356,21 @@ const SURFACES=[
   ["usage","Your time","how your own use is reflected back"]
 ];
 const SLABEL={};SURFACES.forEach(s=>SLABEL[s[0]]=s[1]);
-const FORCEWORD={1:"Gentle",2:"Light",3:"Moderate",4:"Strong",5:"Paternalistic"};
-const RISK={1:"high",2:"moderate",3:"low",4:"moderate",5:"high"};
+const FORCEWORD={1:"Gentle",2:"Moderate",3:"Strong"};
+const RISK={1:"high",2:"low",3:"high"};
 
 // Each verb carries a clear definition, a mechanism phrase, and the grounded
 // outcome it produces at a moderate strength. The journey, holds, fails and
 // failure risk are computed from the strength column it currently sits in.
 const VERBS={
-  Mute:{surface:"pings",force:3,ev:"strong",
+  Mute:{surface:"pings",force:2,ev:"strong",
     def:"Turns off the noise from a feature while leaving the content reachable when you choose.",
     mech:"silencing the broadcast alerts",
     anchor:"you check on your own terms with far fewer interruptions (Fitz et al. 2019)",
     layer:"Casino + Congregation",principle:"Modularity",
     guard:"Silence the casino's pings, not a real person trying to reach you.",
     cites:["Fitz et al. 2019, CHB (the never-notify group felt more anxiety and FoMO and self-initiated more checking).","Pielot & Rello 2017 (a notification-free week left people less distracted but anxious about responsiveness)."]},
-  Aggregate:{surface:"pings",force:2,ev:"strong",
+  Aggregate:{surface:"pings",force:1,ev:"strong",
     def:"Holds scattered alerts and delivers them together at times you set.",
     mech:"collecting alerts into set batches",
     anchor:"mood, attention and control improve and stress drops (Fitz et al. 2019)",
@@ -372,28 +385,28 @@ const VERBS={
     guard:"Reveal the pull, then pair it with an action or it fades to noise.",
     cites:["Grüning et al. 2023, PNAS (the deliberation message alone was not effective; the dismiss option and delay carried the effect).","Fazio 2020 (pausing to consider has modest effects)."]},
 
-  Reorder:{surface:"feed",force:2,ev:"strong",
+  Reorder:{surface:"feed",force:1,ev:"strong",
     def:"Swaps the engagement-ranked feed for a neutral order such as newest-first.",
     mech:"replacing the ranked feed with your order",
     anchor:"time on the platform and engineered pull drop substantially (Guess et al. 2023)",
     layer:"Casino",principle:"Modularity",
     guard:"Remember it proves quality is not the axis: less sticky is not automatically better.",
     cites:["Guess et al. 2023, Science (a chronological feed cut time and activity, raised untrustworthy content, left attitudes unchanged)."]},
-  Slow:{surface:"feed",force:3,ev:"thin",
+  Slow:{surface:"feed",force:2,ev:"thin",
     def:"Caps how fast content can be served, so the tempo is yours not the feed's.",
     mech:"controlling the rate of consumption",
     anchor:"binge depth drops as the cascade rhythm breaks",
     layer:"Casino",principle:"Modularity",
     guard:"Slow the feed, not a live exchange between people.",
     cites:["Extrapolated from friction findings (Grüning et al. 2023). Direct evidence is thin."]},
-  Block:{surface:"feed",force:5,ev:"moderate",
+  Block:{surface:"feed",force:3,ev:"moderate",
     def:"Takes a feature or app away completely.",
     mech:"removing the feature outright",
     anchor:"target use drops sharply while it lasts (Lyngs et al. 2019)",
-    layer:"Casino (risks Commons)",principle:"Modularity",
+    layer:"Casino (risks real connection)",principle:"Modularity",
     guard:"Never block a whole app if real conversation lives inside it.",
     cites:["Lyngs et al. 2019, CHI (block and removal is the most common and most circumvented strategy).","Haliburton et al. 2024, CHI (users take breaks from restrictions and rebound)."]},
-  Divert:{surface:"feed",force:2,ev:"thin",
+  Divert:{surface:"feed",force:1,ev:"thin",
     def:"Redirects attention away from the feed and toward something offline you chose.",
     mech:"sending you somewhere better than the feed",
     anchor:"the pull is intercepted and pointed at an offline reward",
@@ -401,21 +414,21 @@ const VERBS={
     guard:"Divert away from the casino, not away from a person mid-conversation.",
     cites:["Predicted from the reverse-reward principle and the interstitial-friction literature (Grüning et al. 2023)."]},
 
-  Cap:{surface:"scroll",force:4,ev:"moderate",
+  Cap:{surface:"scroll",force:3,ev:"moderate",
     def:"Puts a ceiling on how much you can consume in a sitting.",
     mech:"setting a finite amount",
     anchor:"you finally get a stopping point the platform refuses to give",
     layer:"Casino",principle:"Modularity",
     guard:"Cap the scroll, not the conversation.",
     cites:["Lyngs et al. 2019, CHI.","Screen-time-limit and ambient-timer studies (soft limits are often ignored; an ambient timer cut use about 10.7 percent)."]},
-  Summarize:{surface:"scroll",force:2,ev:"thin",
+  Summarize:{surface:"scroll",force:1,ev:"thin",
     def:"Gives you a short digest instead of an endless stream to scroll.",
     mech:"replacing the scroll with a short précis",
     anchor:"you stay informed without the scroll ritual",
     layer:"Casino + Congregation",principle:"Reverse Reward Loop",
     guard:"Summarise the broadcast, not the message from a friend.",
     cites:["Predicted. No strong direct evidence located; reasoned from the stopping-cue literature."]},
-  Decay:{surface:"scroll",force:3,ev:"thin",
+  Decay:{surface:"scroll",force:2,ev:"thin",
     def:"Makes content and unread counts expire so nothing piles up to chase.",
     mech:"letting content and access expire",
     anchor:"there is no backlog to fall behind on",
@@ -423,22 +436,22 @@ const VERBS={
     guard:"Let casino noise decay, do not delete a person's words to you.",
     cites:["Predicted. Ephemerality research is mostly engagement-driven; direct well-being evidence is thin."]},
 
-  Quarantine:{surface:"recs",force:3,ev:"moderate",
+  Quarantine:{surface:"recs",force:2,ev:"moderate",
     def:"Moves the riskiest feed behind a deliberate extra step.",
     mech:"putting the algorithmic feed behind a door",
     anchor:"the rabbit hole becomes opt-in while core use stays usable (Lyngs et al. 2020)",
     layer:"Casino",principle:"Modularity",
     guard:"Quarantine the feed, keep the inbox in the open.",
     cites:["Lyngs et al. 2020, CHI (removing the Facebook newsfeed let people use the site socially without the spiral)."]},
-  Separate:{surface:"recs",force:2,ev:"moderate",
+  Separate:{surface:"recs",force:1,ev:"moderate",
     def:"Pulls the blended feed apart into its layers so each can be treated differently.",
     mech:"splitting the blended stream into layers",
     anchor:"each layer can be handled on its own terms (Guess et al. 2023)",
     layer:"Structural (all three)",principle:"Modularity",
-    guard:"Separation is what lets you protect the commons in the first place.",
+    guard:"Separation is what lets you protect real connection in the first place.",
     cites:["Guess et al. 2023, Science / Nyhan et al. 2023 (removing reshared content reshaped exposure, with mixed effects)."]},
 
-  Strip:{surface:"counts",force:4,ev:"strong",
+  Strip:{surface:"counts",force:3,ev:"strong",
     def:"Removes one reward signal, like the like-count, while the post itself stays.",
     mech:"removing a reward mechanic",
     anchor:"screen time drops 7 to 11 percent and perceived control rises (Holte & Ferraro 2020; Dekker & Baumgartner 2024)",
@@ -446,14 +459,14 @@ const VERBS={
     guard:"Stripping a metric is fine, stripping the message thread is not.",
     cites:["Holte & Ferraro 2020; Dekker & Baumgartner 2024 (greyscale reduces screen time and raises perceived control, no reliable mood change).","Instagram hidden-likes trials."]},
 
-  Gate:{surface:"open",force:3,ev:"strong",
+  Gate:{surface:"open",force:2,ev:"strong",
     def:"Puts a short, deliberate pause between you and opening the app.",
     mech:"adding an intent check before entry",
     anchor:"about a third of opens are abandoned and opens fall 37 percent over six weeks (Grüning et al. 2023)",
     layer:"Casino",principle:"Ethical Gamification",
     guard:"Gate the reflexive open, not the deliberate one.",
     cites:["Grüning et al. 2023, PNAS (one sec: 36 percent dismissed after the pause, 37 percent fewer opens; the dismiss option mattered most).","Haliburton et al. 2024, CHI (frictions raise intentional opening; users take breaks and rebound)."]},
-  Schedule:{surface:"open",force:3,ev:"moderate",
+  Schedule:{surface:"open",force:2,ev:"moderate",
     def:"Limits the app to set hours, like a shop that closes.",
     mech:"giving the app fixed opening hours",
     anchor:"availability is bounded and the willpower cost of resisting drops",
@@ -461,7 +474,7 @@ const VERBS={
     guard:"Close the casino after hours, keep the door to people open.",
     cites:["Adjacent to Fitz et al. 2019 (predictable delivery helps) and Pielot & Rello 2017 (forced absence raises anxiety)."]},
 
-  Cooldown:{surface:"refresh",force:3,ev:"moderate",
+  Cooldown:{surface:"refresh",force:2,ev:"moderate",
     def:"Blocks an instant re-open or refresh for a short cooling-off window.",
     mech:"locking a short interval after you leave",
     anchor:"the instant re-check loop is interrupted",
@@ -473,9 +486,9 @@ const VERBS={
     def:"Promotes the people and sources you choose above whatever the feed pushes.",
     mech:"elevating what matters above the churn",
     anchor:"genuine connection stays visible without removing anything",
-    layer:"Commons",principle:"Modularity",
+    layer:"Real connection",principle:"Modularity",
     guard:"Pin the people, let the feed fall where it may.",
-    cites:["Predicted from the commons-preservation principle. Direct evidence is thin."]},
+    cites:["Predicted from the principle of protecting real connection. Direct evidence is thin."]},
 
   Reflect:{surface:"usage",force:1,ev:"moderate",
     def:"Shows you your own usage plainly, as information rather than a scoreboard.",
@@ -484,7 +497,7 @@ const VERBS={
     layer:"Self",principle:"Reverse Reward Loop",
     guard:"Reflection should inform you, not shame you.",
     cites:["Ambient session-timer studies (improved competence and awareness, not motivation).","Lyngs et al. 2019, CHI (self-tracking cluster)."]},
-  Reward:{surface:"usage",force:2,ev:"moderate",
+  Reward:{surface:"usage",force:1,ev:"moderate",
     def:"Gives staying off the app a visible payoff, so progress accrues to you.",
     mech:"assigning value to staying away",
     anchor:"disengagement gets a tangible payoff and early momentum (Lyngs et al. 2019)",
@@ -508,7 +521,7 @@ function detailFor(name){
   const f=d.force;
   const mech=d.mech||("acting on "+(SLABEL[d.surface]||d.surface).toLowerCase());
   let journey,holds,fails;
-  if(f<=2){
+  if(f===1){
     journey=[
       ["First encounter","At strength "+f+", a light touch. "+cap(mech)+", but most people barely register it."],
       ["Adaptation","Easy to look past, so it fades into the background within days."],
@@ -516,7 +529,7 @@ function detailFor(name){
     ];
     holds={when:"the nudge lands right at the decision point and comes with an easy action to take",then:"a motivated user gets a small but real shift"};
     fails={when:"it is gentle enough to ignore",then:"it becomes wallpaper and nothing changes, the way a bare prompt with no friction did nothing in trials"};
-  } else if(f===3){
+  } else if(f===2){
     journey=[
       ["First encounter","At strength "+f+", a real beat of friction. "+cap(mech)+", noticeable but not a wall."],
       ["Adaptation","Behaviour reshapes around it across the first weeks."],
@@ -531,7 +544,7 @@ function detailFor(name){
       ["Steady state","It holds only as a commitment you chose for yourself; otherwise it gets undermined."]
     ];
     holds={when:"you set it on yourself as a commitment and it touches only the casino",then:"use drops sharply, at least in the short term"};
-    fails={when:"it is imposed, or blunt enough to catch real people in it",then:"it gets circumvented or uninstalled, or it takes the commons down along with the casino"};
+    fails={when:"it is imposed, or blunt enough to catch real people in it",then:"it gets circumvented or uninstalled, or it takes real connection down along with the casino"};
   }
   return {journey:journey,holds:holds,fails:fails,risk:RISK[f]||"moderate"};
 }
@@ -550,7 +563,7 @@ function F(){return phState.force;}
 function igItem(i){
   var s=phState,f=s.force,hide=(s.verb==='Strip'&&f>=3),dim=(s.verb==='Strip'&&f>0&&f<=2);
   var tag='';
-  if(s.verb==='Reveal'&&f>0&&i%2===0){tag=f>=4?'<span class="reveal" style="background:#F4C7C0">shown only to keep you scrolling</span>':'<span class="reveal" style="background:#F0EFF7;color:#6a6a78">recommended</span>';}
+  if(s.verb==='Reveal'&&f>0&&i%2===0){tag=f>=3?'<span class="reveal" style="background:#F4C7C0">shown only to keep you scrolling</span>':'<span class="reveal" style="background:#F0EFF7;color:#6a6a78">recommended</span>';}
   var dec=(s.verb==='Decay'&&f>0)?'<span style="margin-left:auto;font-size:11px;color:#8a8a93">expires in '+decayWin()+'</span>':'';
   var likes=hide?'<div class="ph-likes" style="color:#8a8a93">Likes hidden</div>':'<div class="ph-likes"'+(dim?' style="color:#c2c2cc"':'')+'><span id="lk'+i+'">'+(80+i*7)+'</span> likes</div>';
   return '<div class="ph-post" data-id="'+i+'"><div class="ph-prow"><span class="ph-av"></span><span class="ph-un">user_'+i+'</span>'+tag+dec+'</div><div class="ph-img"></div><div class="ph-acts"><span class="ph-like" data-id="'+i+'">&#9825;</span><span>&#128172;</span><span>&#9992;</span><span class="sp">&#128278;</span></div>'+likes+'<div class="ph-cap"><b>user_'+i+'</b> a small moment from today</div></div>';
@@ -561,7 +574,7 @@ function ytItem(i){
 }
 function itemHTML(i){return phState.app==='yt'?ytItem(i):igItem(i);}
 function feedItems(n){var h='';for(var i=0;i<n;i++){h+=itemHTML(phState.count++);}return h;}
-function decayWin(){var f=phState.force;return f<=1?'6h':f===2?'3h':f===3?'2h':f===4?'45m':'15m';}
+function decayWin(){var f=phState.force;return f<=1?'6h':f===2?'2h':'30m';}
 
 function topBar(){
   var s=phState,muted=(s.verb==='Mute'&&s.force>0);
@@ -575,52 +588,52 @@ function navBar(off){
 function phTabsList(){return phState.app==='yt'?['Subscriptions','Recommended','Explore']:['Friends','Following','Algorithm'];}
 function s_tab(){var t=phState.tab,l=phTabsList();return l.indexOf(t)<0?l[0]:t;}
 function banner(txt,good){return '<div class="ph-toast"'+(good?'':' style="background:#FBE4E0;color:#9B3329"')+'>'+txt+'</div>';}
-function digestCard(){return '<div class="ph-card2"><div class="big">Today in '+(phState.force>=4?'five':'a few')+' lines</div><div class="sm" style="text-align:left;margin-top:8px;line-height:1.8">&bull; two friends posted from the coast<br>&bull; your team shipped the update<br>&bull; one event this weekend<br>&bull; a reply waiting from sam<br>&bull; nothing else needs you</div></div>';}
+function digestCard(){return '<div class="ph-card2"><div class="big">Today in '+(phState.force>=3?'five':'a few')+' lines</div><div class="sm" style="text-align:left;margin-top:8px;line-height:1.8">&bull; two friends posted from the coast<br>&bull; your team shipped the update<br>&bull; one event this weekend<br>&bull; a reply waiting from sam<br>&bull; nothing else needs you</div></div>';}
 
 function headerInFeed(){
   var v=phState.verb,f=phState.force; if(f===0)return banner('default app, no verb applied',false);
-  if(v==='Reorder')return banner(f<=2?'mostly newest, light reshuffle':f===3?'newest first, your order':'strictly chronological, ranking off',true);
-  if(v==='Slow')return banner(f<=2?'a touch slower':f===3?'paced, scroll for the next':'one at a time, deliberate pauses',true);
+  if(v==='Reorder')return banner(f===1?'mostly newest, light reshuffle':f===2?'newest first, your order':'strictly chronological, ranking off',true);
+  if(v==='Slow')return banner(f===1?'a touch slower':f===2?'paced, scroll for the next':'one at a time, deliberate pauses',true);
   if(v==='Decay')return banner('items expire in '+decayWin()+', nothing piles up',true);
-  if(v==='Aggregate')return banner(f<=2?'alerts lightly grouped':f===3?'batched into 9am and 6pm':'strict, twice a day only',true);
-  if(v==='Strip')return banner(f<=2?'counts dimmed':'like and view counts hidden',true);
-  if(v==='Reveal')return banner(f<=2?'a quiet label on some items':'every item flagged with why it is shown',true);
-  if(v==='Mute')return banner(f<=2?'quiet, badges off, still there if you look':f===3?'held and delivered in batches':'fully silent, you may miss things',true);
-  if(v==='Summarize')return banner('a digest sits at the top'+(f>=3?', scroll trimmed':''),true);
-  if(v==='Pin')return '<div class="ph-pinned"><span class="ph-av"></span><div><b>sam</b>, pinned above the churn<br><span style="color:#8a8a93">'+(f>=4?'and the rest is hidden':'someone you actually know')+'</span></div></div>';
-  if(v==='Reflect')return f<=2?banner('22 min today',true):'<div class="ph-card2"><div class="big">You, today</div><div class="sm"><span id="phmin">22</span> minutes, 3 opens. Shown plainly, no nudge.</div></div>';
-  if(v==='Reward')return f<=2?banner('+1 to your offline list',true):'<div class="ph-card2" style="background:#EAF5E1;border-color:#DDE8CF"><div class="big" style="color:#3B6D11">3 days lighter</div><div class="sm">Reclaimed time went to your offline list. +1.</div></div>';
-  if(v==='Cooldown')return '<div class="ph-card2"><div class="big">Just checked</div><div class="sm">Refresh unlocks in <span id="phcd">'+(f*6)+'</span>s.</div></div>';
+  if(v==='Aggregate')return banner(f===1?'alerts lightly grouped':f===2?'batched into 9am and 6pm':'strict, twice a day only',true);
+  if(v==='Strip')return banner(f===1?'counts dimmed':'like and view counts hidden',true);
+  if(v==='Reveal')return banner(f===1?'a quiet label on some items':'every item flagged with why it is shown',true);
+  if(v==='Mute')return banner(f===1?'quiet, badges off, still there if you look':f===2?'held and delivered in batches':'fully silent, you may miss things',true);
+  if(v==='Summarize')return banner('a digest sits at the top'+(f>=2?', scroll trimmed':''),true);
+  if(v==='Pin')return '<div class="ph-pinned"><span class="ph-av"></span><div><b>sam</b>, pinned above the churn<br><span style="color:#8a8a93">'+(f>=3?'and the rest is hidden':'someone you actually know')+'</span></div></div>';
+  if(v==='Reflect')return f===1?banner('22 min today',true):'<div class="ph-card2"><div class="big">You, today</div><div class="sm"><span id="phmin">22</span> minutes, 3 opens. Shown plainly, no nudge.</div></div>';
+  if(v==='Reward')return f===1?banner('+1 to your offline list',true):'<div class="ph-card2" style="background:#EAF5E1;border-color:#DDE8CF"><div class="big" style="color:#3B6D11">3 days lighter</div><div class="sm">Reclaimed time went to your offline list. +1.</div></div>';
+  if(v==='Cooldown')return '<div class="ph-card2"><div class="big">Just checked</div><div class="sm">Refresh unlocks in <span id="phcd">'+(f*8)+'</span>s.</div></div>';
   if(v==='Separate'){
-    if(f<=2)return banner('one feed, but algorithm posts are labelled',true);
-    if(f===3){var act=s_tab(),tabs=phTabsList();return '<div class="ph-tabs">'+tabs.map(function(x){return '<div class="ph-tab'+(x===act?' on':'')+'" onclick="phTab(\''+x+'\')">'+x+'</div>';}).join('')+'</div>';}
+    if(f===1)return banner('one feed, but algorithm posts are labelled',true);
+    if(f===2){var act=s_tab(),tabs=phTabsList();return '<div class="ph-tabs">'+tabs.map(function(x){return '<div class="ph-tab'+(x===act?' on':'')+'" onclick="phTab(\''+x+'\')">'+x+'</div>';}).join('')+'</div>';}
     return banner('algorithm feed hidden, only people you chose',true);
   }
-  if(v==='Schedule'&&f<=2)return banner('winding down, closes at 6pm',true);
-  if(v==='Quarantine'&&f<=2)return banner('recommendations kept below, clearly labelled',true);
-  if(v==='Quarantine'&&f>=4)return banner('recommendations off entirely',true);
-  if(v==='Block'&&f<=2)return banner('a gentle nudge: you meant to step back. still here if you need it',true);
+  if(v==='Schedule'&&f===1)return banner('winding down, closes at 6pm',true);
+  if(v==='Quarantine'&&f===1)return banner('recommendations kept below, clearly labelled',true);
+  if(v==='Quarantine'&&f>=3)return banner('recommendations off entirely',true);
+  if(v==='Block'&&f===1)return banner('a gentle nudge: you meant to step back. still here if you need it',true);
   return '';
 }
 
 function ovBox(big,sm,btn,show,wait){return '<div class="ph-overlay2" id="phov" style="display:'+(show?'flex':'none')+'"><div class="ph-card"><div class="big">'+big+'</div><div class="sm">'+sm+'</div><span class="ph-btn" id="phgo"'+(wait?' style="opacity:.45;pointer-events:none"':'')+' onclick="phReset()">'+(wait?'Wait...':btn)+'</span></div></div>';}
 function overlayHTML(){
   var v=phState.verb,f=phState.force; if(f===0)return '';
-  if(v==='Gate')return ovBox('Why are you opening this?',f>=4?'Sit with it for a moment.':'A pause before you go in.','Continue',true,f>=4);
-  if(v==='Quarantine'&&f===3)return ovBox('Recommendations are behind a door','Opt in on purpose, or stay out.','Open recommendations',true,false);
-  if(v==='Block'&&f===3)return ovBox('Take a break?','You set this. You can still go in if you mean to.','Open anyway',true,false);
-  if(v==='Schedule'&&f===3)return ovBox('Closed for now','Outside your hours. Open if you must.','Open anyway',true,false);
-  if(v==='Divert')return ovBox(f<=2?'A gentle nudge':'Your time is up',f<=2?'You can dismiss this and keep going.':'Here is what you said you would rather do.',f<=2?'Dismiss':'Open your walk playlist',false,false);
+  if(v==='Gate')return ovBox('Why are you opening this?',f>=3?'Sit with it for a moment.':'A pause before you go in.','Continue',true,f>=3);
+  if(v==='Quarantine'&&f===2)return ovBox('Recommendations are behind a door','Opt in on purpose, or stay out.','Open recommendations',true,false);
+  if(v==='Block'&&f===2)return ovBox('Take a break?','You set this. You can still go in if you mean to.','Open anyway',true,false);
+  if(v==='Schedule'&&f===2)return ovBox('Closed for now','Outside your hours. Open if you must.','Open anyway',true,false);
+  if(v==='Divert')return ovBox(f===1?'A gentle nudge':'Your time is up',f===1?'You can dismiss this and keep going.':'Here is what you said you would rather do.',f===1?'Dismiss':'Open your walk playlist',false,false);
   return '';
 }
 
 function buildShell(){
   var f=phState.force,v=phState.verb,top=topBar(); phState.count=0;
-  if(v==='Block'&&f>=4)return top+'<div class="ph-off"><div class="big">The '+(phState.app==='yt'?'app':'feed')+' is off</div><div class="sm">'+(f>=5?'Locked until 5:00pm. No early open.':'Off until 5:00pm.')+'</div></div>'+navBar(true);
-  if(v==='Schedule'&&f>=4)return top+'<div class="ph-off"><div class="big">Closed, 9am to 6pm</div><div class="sm">'+(f>=5?'Hard closed. Opens 9:00am.':'Closed now. Opens 9:00am.')+'</div></div>'+navBar(true);
-  if(v==='Summarize'&&f>=4)return top+digestCard()+navBar(false);
-  var held=((v==='Mute'||v==='Aggregate')&&f>0&&f<=3)?'<div class="ph-heldbadge" id="pheld">0 held</div>':'';
-  var nItems=(v==='Pin'&&f>=4)?1:6;
+  if(v==='Block'&&f>=3)return top+'<div class="ph-off"><div class="big">The '+(phState.app==='yt'?'app':'feed')+' is off</div><div class="sm">'+'Locked until 5:00pm. No early open.'+'</div></div>'+navBar(true);
+  if(v==='Schedule'&&f>=3)return top+'<div class="ph-off"><div class="big">Closed, 9am to 6pm</div><div class="sm">'+'Hard closed. Opens 9:00am.'+'</div></div>'+navBar(true);
+  if(v==='Summarize'&&f>=3)return top+digestCard()+navBar(false);
+  var held=((v==='Mute'||v==='Aggregate')&&f>0&&f<=2)?'<div class="ph-heldbadge" id="pheld">0 held</div>':'';
+  var nItems=(v==='Pin'&&f>=3)?1:6;
   var feed='<div class="ph-feed" id="phfeed">'+headerInFeed()+feedItems(nItems)+'</div>';
   return top+held+'<div class="ph-live" id="phlive"></div>'+feed+overlayHTML()+navBar(false);
 }
@@ -628,11 +641,11 @@ function buildShell(){
 function pingTick(){
   var f=phState.force; phState.pings=(phState.pings||0)+1;
   if(f===0){var l=document.getElementById('phlive');if(l){l.innerHTML='&#128276; new alert, just now';l.classList.add('show');setTimeout(function(){l.classList.remove('show');},1500);}return;}
-  if(f>=4)return; // fully silent, dropped
-  var b=document.getElementById('pheld');if(b)b.textContent=phState.pings+(f<=2?' quiet':' held');
+  if(f>=3)return; // fully silent, dropped
+  var b=document.getElementById('pheld');if(b)b.textContent=phState.pings+(f===1?' quiet':' held');
 }
 function startPingLoop(){phTimers.push(setInterval(pingTick,2600));}
-function startCooldown(){phState.cd=phState.force*6;var id=setInterval(function(){phState.cd--;var el=document.getElementById('phcd');if(el)el.textContent=phState.cd>0?phState.cd:0;if(phState.cd<=0){clearInterval(id);if(el&&el.parentNode)el.parentNode.innerHTML='Refresh unlocked. The wave passed without you.';}},1000);phTimers.push(id);}
+function startCooldown(){phState.cd=phState.force*8;var id=setInterval(function(){phState.cd--;var el=document.getElementById('phcd');if(el)el.textContent=phState.cd>0?phState.cd:0;if(phState.cd<=0){clearInterval(id);if(el&&el.parentNode)el.parentNode.innerHTML='Refresh unlocked. The wave passed without you.';}},1000);phTimers.push(id);}
 function startReflect(){phState.min=22;phTimers.push(setInterval(function(){phState.min++;var el=document.getElementById('phmin');if(el)el.textContent=phState.min;},1500));}
 
 function onScroll(f){
@@ -641,8 +654,8 @@ function onScroll(f){
   if(f.scrollTop+f.clientHeight < f.scrollHeight-50)return;
   if(phState.loading||phState.capped)return;
   if(v==='Cap'&&fr>0&&phState.count>=9){
-    if(fr>=4){f.insertAdjacentHTML('beforeend','<div class="ph-stop"><div class="big">That is your 10 for today</div><div class="sm">The feed ends here. No more today.</div></div>');phState.capped=true;return;}
-    if(!phState.prompted){f.insertAdjacentHTML('beforeend','<div class="ph-stop"><div class="big">You have seen your 10</div><div class="sm">'+(fr===3?'You can extend if you really want.':'Keep going if you like, your call.')+'</div><span class="ph-btn" onclick="phMore()" style="margin-top:8px">Keep going</span></div>');phState.prompted=true;}
+    if(fr>=3){f.insertAdjacentHTML('beforeend','<div class="ph-stop"><div class="big">That is your 10 for today</div><div class="sm">The feed ends here. No more today.</div></div>');phState.capped=true;return;}
+    if(!phState.prompted){f.insertAdjacentHTML('beforeend','<div class="ph-stop"><div class="big">You have seen your 10</div><div class="sm">'+(fr===2?'You can extend if you really want.':'Keep going if you like, your call.')+'</div><span class="ph-btn" onclick="phMore()" style="margin-top:8px">Keep going</span></div>');phState.prompted=true;}
     return;
   }
   phState.loading=true;var tok=phState.token;
@@ -663,14 +676,14 @@ function bindLive(){
   if(phState.verb==='Mute'||phState.verb==='Aggregate')startPingLoop();
   if(phState.verb==='Cooldown'&&phState.force>0)startCooldown();
   if(phState.verb==='Reflect'&&phState.force>0)startReflect();
-  if(phState.verb==='Gate'&&phState.force>=4){phTimers.push(setTimeout(function(){var g=document.getElementById('phgo');if(g){g.style.opacity='1';g.style.pointerEvents='auto';g.textContent='Continue';}},2200));}
+  if(phState.verb==='Gate'&&phState.force>=3){phTimers.push(setTimeout(function(){var g=document.getElementById('phgo');if(g){g.style.opacity='1';g.style.pointerEvents='auto';g.textContent='Continue';}},2200));}
 }
 
-function strengthControls(){var f=phState.force,h='';for(var k=0;k<=5;k++){h+='<button class="ph-ctrl ph-st'+(k===f?' on':'')+'" data-f="'+k+'" onclick="phForce('+k+')">'+(k===0?'off':k)+'</button>';}return h;}
+function strengthControls(){var f=phState.force,h='';for(var k=0;k<=3;k++){h+='<button class="ph-ctrl ph-st'+(k===f?' on':'')+'" data-f="'+k+'" onclick="phForce('+k+')">'+(k===0?'off':k)+'</button>';}return h;}
 function updateControls(){document.querySelectorAll('.ph-app').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-app')===phState.app);});document.querySelectorAll('.ph-st').forEach(function(b){b.classList.toggle('on',parseInt(b.getAttribute('data-f'),10)===phState.force);});}
 function phMount(){phState.token=(phState.token||0)+1;phClear();var el=document.getElementById('phscreen');if(!el)return;el.innerHTML=buildShell();bindLive();updateControls();}
 function resetTransient(){phState.pings=0;phState.count=0;phState.opened=false;phState.loading=false;phState.capped=false;phState.prompted=false;}
-function phInit(v){phClear();phState={verb:v,app:'ig',force:(VERBS[v]?VERBS[v].force:3),pings:0,count:0,tab:'Friends',opened:false,loading:false,capped:false,prompted:false,token:0};phMount();}
+function phInit(v){phClear();phState={verb:v,app:'ig',force:(VERBS[v]?VERBS[v].force:2),pings:0,count:0,tab:'Friends',opened:false,loading:false,capped:false,prompted:false,token:0};phMount();}
 function phForce(k){phState.force=k;resetTransient();phMount();}
 function phApp(a){phState.app=a;phState.tab=phTabsList()[0];resetTransient();phMount();}
 function phTab(t){phState.tab=t;phMount();}
@@ -694,7 +707,7 @@ function populateSurfaceSelect(){
 
 function pips(force){
   let h='<span class="pips">';
-  for(let i=1;i<=5;i++)h+='<span class="pip'+(i<=force?' on p'+force:'')+'"></span>';
+  for(let i=1;i<=3;i++)h+='<span class="pip'+(i<=force?' on p'+force:'')+'"></span>';
   h+='</span>';
   return h;
 }
@@ -707,8 +720,8 @@ function buildGrid(){
   const grid=document.createElement("div");grid.className="grid2";
   const corner=document.createElement("div");corner.className="gcorner";corner.innerHTML="where &#8595; / strength &#8594;";
   grid.appendChild(corner);
-  const words={1:"gentle",5:"paternal."};
-  for(let s=1;s<=5;s++){
+  const words={1:"gentle",2:"moderate",3:"strong"};
+  for(let s=1;s<=3;s++){
     const h=document.createElement("div");h.className="colh h"+s;
     h.innerHTML=s+'<small>'+(words[s]||"&nbsp;")+'</small>';
     grid.appendChild(h);
@@ -718,7 +731,7 @@ function buildGrid(){
     const lab=document.createElement("div");lab.className="rlabel";
     lab.innerHTML=p[1]+'<small>'+p[2]+'</small>';
     grid.appendChild(lab);
-    for(let s=1;s<=5;s++){
+    for(let s=1;s<=3;s++){
       const cell=document.createElement("div");cell.className="cell c"+s;
       cell.dataset.place=p[0];cell.dataset.force=s;
       cell.addEventListener("dragover",e=>{e.preventDefault();cell.classList.add("dragover");});
@@ -761,7 +774,7 @@ function select(v){
       <button class="del-btn" onclick="removeVerb('${v}')">Remove</button>
     </div>
     <div class="tags">
-      <span class="tag fmeter">Strength ${pips(d.force)} <span class="flabel">${d.force}/5 ${FORCEWORD[d.force]}</span></span>
+      <span class="tag fmeter">Strength ${pips(d.force)} <span class="flabel">${d.force}/3 ${FORCEWORD[d.force]}</span></span>
       <span class="tag">Where: ${SLABEL[d.surface]||d.surface}</span>
       <span class="tag">Layer: ${d.layer}</span>
       <span class="tag">Principle: ${d.principle}</span>
@@ -777,7 +790,7 @@ function select(v){
       <div class="branch fail"><h4>&#10007; Breaks down when <span class="risk ${j.risk}">failure risk ${j.risk}</span></h4><div class="when">${linkify(j.fails.when)}.</div><div class="then"><span class="arr">&#8594;</span><span>${linkify(j.fails.then)}.</span></div></div>
     </div>
     ${renderPreview(v)}
-    <div class="guard"><span class="lab">The commons check</span>${d.guard}</div>
+    <div class="guard"><span class="lab">The connection check</span>${d.guard}</div>
     <div class="cites"><span class="lab">Grounded in</span><ul>${cites}</ul></div>
   `;
   if(hasPreview(v))phInit(v);
@@ -813,26 +826,26 @@ function renderShortlist(){
   if(shortlist.size===0){el.innerHTML='<div class="slempty">Add verbs to your layer, or pick a starting point at the top.</div>';return;}
   el.innerHTML=[...shortlist].map(v=>{
     const d=VERBS[v];
-    return `<div class="slitem"><span class="nm">${v}</span><span class="fnum">${d.force}/5</span><span class="meta">${SLABEL[d.surface]||d.surface} &middot; ${d.def}</span><button class="rm" title="remove" onclick="toggleShort('${v}')">&times;</button></div>`;
+    return `<div class="slitem"><span class="nm">${v}</span><span class="fnum">${d.force}/3</span><span class="meta">${SLABEL[d.surface]||d.surface} &middot; ${d.def}</span><button class="rm" title="remove" onclick="toggleShort('${v}')">&times;</button></div>`;
   }).join("");
 }
 
 document.getElementById("copybtn").onclick=()=>{
   if(shortlist.size===0)return;
-  const txt=[...shortlist].map(v=>{const d=VERBS[v];return `${v} (strength ${d.force}/5, ${SLABEL[d.surface]||d.surface}): ${d.def}`;}).join("\n");
+  const txt=[...shortlist].map(v=>{const d=VERBS[v];return `${v} (strength ${d.force}/3, ${SLABEL[d.surface]||d.surface}): ${d.def}`;}).join("\n");
   navigator.clipboard&&navigator.clipboard.writeText(txt);
   const btn=document.getElementById("copybtn");const o=btn.textContent;btn.textContent="Copied";setTimeout(()=>btn.textContent=o,1200);
 };
 
 const PRESETS={
-  "Quiet the noise":{Mute:3,Aggregate:2,Cooldown:3},
-  "End the scroll":{Cap:4,Divert:3,Reorder:2},
-  "Keep people, cut the casino":{Separate:3,Pin:1,Quarantine:3},
-  "Go minimal":{Block:5,Schedule:3,Strip:4}
+  "Quiet the noise":{Mute:2,Aggregate:1,Cooldown:2},
+  "End the scroll":{Cap:3,Divert:2,Reorder:1},
+  "Keep people, cut the casino":{Separate:2,Pin:1,Quarantine:2},
+  "Go minimal":{Block:3,Schedule:2,Strip:3}
 };
 var activePresets=new Set();
 var manualVerbs=new Set();
-function compensate(base,n){if(base<=3)return base;var f=base-(n-1);return f<3?3:f;}
+function compensate(base,n){if(base<=2)return base;var f=base-(n-1);return f<2?2:f;}
 function recomputeLayer(){
   var presetForce={};
   activePresets.forEach(function(nm){var p=PRESETS[nm];Object.keys(p).forEach(function(v){presetForce[v]=Math.max(presetForce[v]||0,p[v]);});});
@@ -867,6 +880,50 @@ function renderPresets(){
 }
 window.applyPreset=applyPreset;window.clearLayer=clearLayer;
 
+/* ---------- The "when" layer: time/context profiles over the same vocabulary ---------- */
+var NATIVE={};
+var profiles=[
+  {name:"Morning", when:"5am to noon", config:{Reflect:{surface:"usage",force:1},Reveal:{surface:"pings",force:1}}, presets:[]},
+  {name:"Work", when:"noon to 6pm", config:{Mute:{surface:"pings",force:2},Quarantine:{surface:"recs",force:2},Separate:{surface:"recs",force:1}}, presets:[]},
+  {name:"Evening", when:"6pm to 5am", config:{Block:{surface:"feed",force:3},Cap:{surface:"scroll",force:3},Strip:{surface:"counts",force:3}}, presets:[]}
+];
+var activeProfile=0;
+var autoWhen=false;
+function profileIndexForNow(){var h=new Date().getHours();if(h>=18||h<5)return 2;if(h>=12)return 1;return 0;}
+function snapshotCurrent(){
+  var cfg={};
+  shortlist.forEach(function(v){if(VERBS[v])cfg[v]={surface:VERBS[v].surface,force:VERBS[v].force};});
+  profiles[activeProfile].config=cfg;
+  profiles[activeProfile].presets=[].concat(Array.from(activePresets));
+}
+function loadProfile(i){
+  activeProfile=i;
+  Object.keys(VERBS).forEach(function(v){if(NATIVE[v]){VERBS[v].surface=NATIVE[v].surface;VERBS[v].force=NATIVE[v].force;}});
+  shortlist.clear();activePresets.clear();manualVerbs.clear();
+  var p=profiles[i],pf={};
+  (p.presets||[]).forEach(function(nm){if(PRESETS[nm])activePresets.add(nm);});
+  activePresets.forEach(function(nm){var pp=PRESETS[nm];Object.keys(pp).forEach(function(v){pf[v]=Math.max(pf[v]||0,pp[v]);});});
+  var n=activePresets.size;
+  Object.keys(pf).forEach(function(v){if(VERBS[v]){VERBS[v].force=compensate(pf[v],n);shortlist.add(v);}});
+  Object.keys(p.config||{}).forEach(function(v){if(VERBS[v]){VERBS[v].surface=p.config[v].surface;VERBS[v].force=p.config[v].force;shortlist.add(v);}});
+  shortlist.forEach(function(v){if(!pf[v])manualVerbs.add(v);});
+  buildGrid();renderShortlist();renderPresets();renderWhen();
+}
+function switchProfile(i){if(i===activeProfile&&!autoWhen)return;snapshotCurrent();autoWhen=false;loadProfile(i);}
+function toggleAuto(){autoWhen=!autoWhen;if(autoWhen){snapshotCurrent();loadProfile(profileIndexForNow());}else{renderWhen();}}
+function renderWhen(){
+  var el=document.getElementById("whentabs");if(!el)return;
+  var now=profileIndexForNow();
+  el.innerHTML=profiles.map(function(p,i){
+    var on=i===activeProfile,live=(autoWhen&&i===now);
+    return '<button class="when-btn'+(on?' on':'')+'" onclick="switchProfile('+i+')"><span class="wname">'+(on?'&#10003; ':'')+p.name+(live?' <span class="livenow">live now</span>':'')+'</span><span class="wwhen">'+p.when+'</span></button>';
+  }).join('');
+  var cb=document.getElementById("autowhen");if(cb)cb.checked=autoWhen;
+  var m=document.getElementById("whenmsg");
+  if(m)m.textContent=autoWhen?("Following the clock. Right now it is the "+profiles[now].name.toLowerCase()+" layer. Edits below are saved to it."):("Editing the "+profiles[activeProfile].name.toLowerCase()+" layer. Edits below are saved to it.");
+}
+window.switchProfile=switchProfile;window.toggleAuto=toggleAuto;
+
 function predictHeuristic(name,force,surface,desc){
   force=parseInt(force,10)||3;
   return {
@@ -875,7 +932,7 @@ function predictHeuristic(name,force,surface,desc){
     mech:"this move on "+(SLABEL[surface]||surface).toLowerCase(),
     anchor:"the compulsive pattern measurably loosens for motivated users",
     layer:"Inferred from the framework",principle:"Modularity",
-    guard:"Target the casino, leave the commons alone.",
+    guard:"Target the casino, leave real connection alone.",
     cites:["Estimated offline from the framework and the dose-response pattern in the friction research (gentle is ignored, the middle works, heavy is circumvented)."]
   };
 }
@@ -885,7 +942,7 @@ async function predictAI(name,force,surface,desc){
   if(!res.ok) throw new Error("proxy error");
   const o=await res.json();
   if(!o.def||!o.mech||!o.anchor) throw new Error("bad shape");
-  return {surface:surface,force:parseInt(force,10)||3,ev:"thin",userAdded:true,def:o.def,mech:o.mech,anchor:o.anchor,layer:o.layer||"Inferred",principle:o.principle||"Modularity",guard:o.guard||"Target the casino, leave the commons alone.",cites:["Predicted from the framework and the cited literature. Closest basis: "+(o.basis||"general patterns")+"."]};
+  return {surface:surface,force:parseInt(force,10)||2,ev:"thin",userAdded:true,def:o.def,mech:o.mech,anchor:o.anchor,layer:o.layer||"Inferred",principle:o.principle||"Modularity",guard:o.guard||"Target the casino, leave real connection alone.",cites:["Predicted from the framework and the cited literature. Closest basis: "+(o.basis||"general patterns")+"."]};
 }
 
 async function handleAdd(){
@@ -914,6 +971,8 @@ loadAdded();
 renderPresets();
 buildGrid();
 renderShortlist();
+Object.keys(VERBS).forEach(function(v){NATIVE[v]={surface:VERBS[v].surface,force:VERBS[v].force};});
+autoWhen=true;loadProfile(profileIndexForNow());
 </script>
 </body>
 </html>
